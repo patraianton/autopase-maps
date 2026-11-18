@@ -1,187 +1,252 @@
 {
- "built_at": "2026-11-17T07:20:00Z",
+ "built_at": "2026-11-18T07:20:05Z",
  "weeks": [
   {
-   "start": "2026-11-09T22:00:00Z",
-   "end": "2026-11-16T22:00:00Z",
-   "label": "10.11–16.11",
+   "start": "2026-11-10T22:00:00Z",
+   "end": "2026-11-17T22:00:00Z",
+   "label": "11.11–17.11",
    "live": {
-    "started": 411,
-    "saw": 391,
-    "saved": 26,
-    "razbor_or_pdf": 21,
+    "started": 390,
+    "saw": 372,
+    "saved": 29,
+    "razbor_or_pdf": 24,
     "email": 1,
     "orders_any": 0,
     "paid_live": 0,
-    "returned_ph": 20
+    "returned_ph": 13
    },
    "live_garage": {
-    "started": 210,
-    "saw": 207,
-    "saved": 21,
-    "razbor_or_pdf": 21,
+    "started": 215,
+    "saw": 212,
+    "saved": 24,
+    "razbor_or_pdf": 24,
     "email": 1,
     "orders_any": 0,
     "paid_live": 0,
-    "returned_ph": 16
+    "returned_ph": 11
    },
    "live_catalog": {
-    "started": 201,
-    "saw": 184,
+    "started": 175,
+    "saw": 160,
     "saved": 5,
     "razbor_or_pdf": 0,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 2
+   },
+   "live_lv": {
+    "started": 255,
+    "saw": 246,
+    "saved": 19,
+    "razbor_or_pdf": 16,
+    "email": 1,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 11
+   },
+   "live_lv_garage": {
+    "started": 138,
+    "saw": 138,
+    "saved": 16,
+    "razbor_or_pdf": 16,
+    "email": 1,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 9
+   },
+   "live_lv_catalog": {
+    "started": 117,
+    "saw": 108,
+    "saved": 3,
+    "razbor_or_pdf": 0,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 2
+   }
+  },
+  {
+   "start": "2026-11-03T22:00:00Z",
+   "end": "2026-11-10T22:00:00Z",
+   "label": "04.11–10.11",
+   "live": {
+    "started": 501,
+    "saw": 473,
+    "saved": 44,
+    "razbor_or_pdf": 44,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 18
+   },
+   "live_garage": {
+    "started": 267,
+    "saw": 250,
+    "saved": 19,
+    "razbor_or_pdf": 19,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 7
+   },
+   "live_catalog": {
+    "started": 234,
+    "saw": 223,
+    "saved": 25,
+    "razbor_or_pdf": 25,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 11
+   },
+   "live_lv": {
+    "started": 275,
+    "saw": 264,
+    "saved": 23,
+    "razbor_or_pdf": 23,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 8
+   },
+   "live_lv_garage": {
+    "started": 148,
+    "saw": 140,
+    "saved": 9,
+    "razbor_or_pdf": 9,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 2
+   },
+   "live_lv_catalog": {
+    "started": 127,
+    "saw": 124,
+    "saved": 14,
+    "razbor_or_pdf": 14,
+    "email": 0,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 6
+   }
+  },
+  {
+   "start": "2026-10-27T22:00:00Z",
+   "end": "2026-11-03T22:00:00Z",
+   "label": "28.10–03.11",
+   "live": {
+    "started": 504,
+    "saw": 469,
+    "saved": 39,
+    "razbor_or_pdf": 40,
+    "email": 3,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 15
+   },
+   "live_garage": {
+    "started": 282,
+    "saw": 265,
+    "saved": 20,
+    "razbor_or_pdf": 20,
+    "email": 3,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 11
+   },
+   "live_catalog": {
+    "started": 222,
+    "saw": 204,
+    "saved": 19,
+    "razbor_or_pdf": 20,
     "email": 0,
     "orders_any": 0,
     "paid_live": 0,
     "returned_ph": 4
    },
    "live_lv": {
-    "started": 261,
-    "saw": 252,
-    "saved": 17,
-    "razbor_or_pdf": 14,
+    "started": 276,
+    "saw": 258,
+    "saved": 26,
+    "razbor_or_pdf": 26,
     "email": 1,
     "orders_any": 0,
     "paid_live": 0,
-    "returned_ph": 17
+    "returned_ph": 10
    },
    "live_lv_garage": {
-    "started": 129,
-    "saw": 129,
+    "started": 170,
+    "saw": 160,
+    "saved": 12,
+    "razbor_or_pdf": 12,
+    "email": 1,
+    "orders_any": 0,
+    "paid_live": 0,
+    "returned_ph": 6
+   },
+   "live_lv_catalog": {
+    "started": 106,
+    "saw": 98,
     "saved": 14,
     "razbor_or_pdf": 14,
-    "email": 1,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 14
-   },
-   "live_lv_catalog": {
-    "started": 132,
-    "saw": 123,
-    "saved": 3,
-    "razbor_or_pdf": 0,
     "email": 0,
     "orders_any": 0,
     "paid_live": 0,
-    "returned_ph": 3
-   }
-  },
-  {
-   "start": "2026-11-02T22:00:00Z",
-   "end": "2026-11-09T22:00:00Z",
-   "label": "03.11–09.11",
-   "live": {
-    "started": 515,
-    "saw": 489,
-    "saved": 50,
-    "razbor_or_pdf": 51,
-    "email": 0,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 24
-   },
-   "live_garage": {
-    "started": 277,
-    "saw": 260,
-    "saved": 20,
-    "razbor_or_pdf": 20,
-    "email": 0,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 11
-   },
-   "live_catalog": {
-    "started": 238,
-    "saw": 229,
-    "saved": 30,
-    "razbor_or_pdf": 31,
-    "email": 0,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 13
-   },
-   "live_lv": {
-    "started": 278,
-    "saw": 267,
-    "saved": 26,
-    "razbor_or_pdf": 27,
-    "email": 0,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 12
-   },
-   "live_lv_garage": {
-    "started": 152,
-    "saw": 144,
-    "saved": 9,
-    "razbor_or_pdf": 9,
-    "email": 0,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 5
-   },
-   "live_lv_catalog": {
-    "started": 126,
-    "saw": 123,
-    "saved": 17,
-    "razbor_or_pdf": 18,
-    "email": 0,
-    "orders_any": 0,
-    "paid_live": 0,
-    "returned_ph": 7
+    "returned_ph": 4
    }
   }
  ],
  "h012": {
-  "day": "2026-11-16",
-  "until": "2026-11-16T22:00:00+00:00",
+  "day": "2026-11-17",
+  "until": "2026-11-17T22:00:00+00:00",
   "h2": {
-   "started": 243,
-   "live_started": 131,
-   "reach_per100": 99.2,
-   "live": 130,
-   "saved": 11,
-   "saved_per100": 8.5,
+   "started": 264,
+   "live_started": 144,
+   "reach_per100": 99.3,
+   "live": 143,
+   "saved": 12,
+   "saved_per100": 8.4,
    "saved_spread": [
-    4.8,
-    14.5
+    4.9,
+    14.1
    ],
-   "razbor": 11,
-   "razbor_per100": 8.5,
+   "razbor": 12,
+   "razbor_per100": 8.4,
    "email": 1,
-   "email_per100": 0.8,
-   "email_per100_saved": 9.1,
+   "email_per100": 0.7,
+   "email_per100_saved": 8.3,
    "orders": 0,
    "paid_live": 0,
    "paid_test": 0,
    "paid_per100": 0.0,
    "returned": 9,
-   "returned_per100": 6.9,
+   "returned_per100": 6.3,
    "exit": 2,
-   "exit_per100": 1.5,
+   "exit_per100": 1.4,
    "exit_by_value": {},
-   "filters": 20,
-   "filters_per100": 15.4,
-   "filter_open": 18,
-   "filter_open_per100": 13.8,
+   "filters": 24,
+   "filters_per100": 16.8,
+   "filter_open": 20,
+   "filter_open_per100": 14.0,
    "saved_with_filters": 4,
-   "saved_without_filters": 7,
-   "opens_events": 150,
-   "opens_per_person": 1.15
+   "saved_without_filters": 8,
+   "opens_events": 158,
+   "opens_per_person": 1.1
   },
   "rest": {
-   "started": 196,
-   "live_started": 137,
-   "reach_per100": 95.6,
-   "live": 131,
-   "saved": 14,
-   "saved_per100": 10.7,
+   "started": 214,
+   "live_started": 152,
+   "reach_per100": 96.1,
+   "live": 146,
+   "saved": 16,
+   "saved_per100": 11.0,
    "saved_spread": [
-    6.5,
+    6.9,
     17.1
    ],
-   "razbor": 14,
-   "razbor_per100": 10.7,
+   "razbor": 16,
+   "razbor_per100": 11.0,
    "email": 0,
    "email_per100": 0.0,
    "email_per100_saved": 0.0,
@@ -189,8 +254,8 @@
    "paid_live": 0,
    "paid_test": 0,
    "paid_per100": 0.0,
-   "returned": 7,
-   "returned_per100": 5.3,
+   "returned": 8,
+   "returned_per100": 5.5,
    "exit": 0,
    "exit_per100": 0.0,
    "exit_by_value": {},
@@ -199,27 +264,27 @@
    "filter_open": 0,
    "filter_open_per100": 0.0,
    "saved_with_filters": 0,
-   "saved_without_filters": 14,
-   "opens_events": 316,
-   "opens_per_person": 2.41
+   "saved_without_filters": 16,
+   "opens_events": 364,
+   "opens_per_person": 2.49
   },
   "h2_lv": {
-   "live": 79,
+   "live": 89,
    "saved": 8,
-   "saved_per100": 10.1,
+   "saved_per100": 9.0,
    "razbor": 8,
    "email": 1,
    "paid_live": 0,
    "returned": 7,
    "exit": 1,
-   "filters": 15,
-   "filters_per100": 19.0,
-   "filter_open": 11,
-   "opens_per_person": 1.43
+   "filters": 19,
+   "filters_per100": 21.3,
+   "filter_open": 13,
+   "opens_per_person": 1.31
   },
-  "min_live": 130,
+  "min_live": 143,
   "need": 258,
-  "eta": "2026-11-25T05:23:26Z",
+  "eta": "2026-11-25T12:09:18Z",
   "stop": false,
   "split_broken": false
  },
@@ -227,7 +292,7 @@
   "paid": 0,
   "orders": 0,
   "free": 0,
-  "until": "2026-11-17T07:20:00Z",
+  "until": "2026-11-18T07:20:05Z",
   "closed": false
  },
  "nogarage": {
@@ -245,46 +310,46 @@
   "ads": {
    "ok": true,
    "since": "2026-11-12",
-   "impressions": 512,
-   "clicks": 127,
-   "cost_eur": 49.19,
+   "impressions": 681,
+   "clicks": 159,
+   "cost_eur": 58.12,
    "campaigns": [
     {
      "name": "AP · Vācija · tiešie (lv+ru)",
      "status": "ENABLED",
-     "impressions": 213,
-     "clicks": 50,
-     "cost_eur": 16.26
+     "impressions": 271,
+     "clicks": 63,
+     "cost_eur": 18.8
     },
     {
      "name": "AP · Vācija · portāli LV",
      "status": "ENABLED",
-     "impressions": 119,
-     "clicks": 33,
-     "cost_eur": 11.12
+     "impressions": 155,
+     "clicks": 42,
+     "cost_eur": 12.72
     },
     {
      "name": "AP · Германия · порталы RU",
      "status": "ENABLED",
-     "impressions": 90,
-     "clicks": 37,
-     "cost_eur": 11.53
+     "impressions": 117,
+     "clicks": 45,
+     "cost_eur": 13.34
     },
     {
      "name": "C2 · Эстония · сообщество и акселератор (RU)",
      "status": "ENABLED",
-     "impressions": 90,
-     "clicks": 7,
-     "cost_eur": 10.28
+     "impressions": 138,
+     "clicks": 9,
+     "cost_eur": 13.26
     }
    ]
   },
   "people": {
-   "live": 32,
-   "saved": 2,
+   "live": 44,
+   "saved": 5,
    "email": 0,
    "paid_live": 0
   },
-  "people_until": "2026-11-16T22:00:00+00:00"
+  "people_until": "2026-11-17T22:00:00+00:00"
  }
 }
