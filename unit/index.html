@@ -85,7 +85,9 @@
   .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
   input[type=range]{width:100%;accent-color:#191815;margin-top:8px}
   .bar{height:12px;border-radius:6px;background:var(--blue);min-width:3px;transition:width .2s}
-  .barcol{width:24%}
+  .barcol{width:15%}
+  .fact{font-weight:800;font-size:17px}
+  .ftable th .was{font-weight:400}
   .truth{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
   .truth .card .q{font-size:14px;font-weight:700;color:var(--mute)}
   .truth .card .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:6px 0 4px;overflow-wrap:anywhere}
@@ -113,6 +115,7 @@
     .cell{width:76px;padding:5px 6px}
     .cell.sm{width:54px}
     .ptable{min-width:680px}
+    .ftable{min-width:500px}
     .dp_pop{flex-direction:column;max-width:calc(100vw - 20px)}
     .dp_presets{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--line);min-width:0}
     .dp_cal{width:auto;min-width:290px}
@@ -230,66 +233,76 @@
     </div>
 
     <div class="card">
-      <h2>Воронка рекламы за месяц</h2>
-      <table>
-        <tr><th>Шаг</th><th class="num">Доля от шага выше</th><th class="num">В месяц</th><th class="barcol"></th></tr>
+      <h2>Воронка рекламы</h2>
+      <div class="scroll"><table class="ftable">
+        <tr><th>Шаг</th><th class="num" id="th_period">За выбранные дни</th><th class="num">Доля от шага выше</th><th class="num">В месяц</th><th class="barcol"></th></tr>
         <tr>
-          <td>📣 Переходов по рекламе Google<span class="was" id="h_clicks">—</span></td>
+          <td>📣 Переходов по рекламе Google</td>
+          <td class="num fact" id="f_clicks">—</td>
           <td class="num">—</td>
           <td class="num"><input class="cell" data-k="clicks" inputmode="decimal"></td>
           <td class="barcol"><div class="bar" id="bar0"></div></td>
         </tr>
         <tr>
           <td>Цена одного перехода<span class="was" id="h_cpc">—</span></td>
+          <td class="num fact" id="f_cpc">—</td>
           <td class="num">×</td>
           <td class="num"><input class="cell sm" data-k="cpc" inputmode="decimal"><span class="unit">€</span></td>
           <td class="barcol"></td>
         </tr>
         <tr>
-          <td>🔎 Открыли страницу подбора<span class="was" id="h_select">—</span></td>
+          <td>🔎 Открыли страницу подбора</td>
+          <td class="num fact" id="f_select">—</td>
           <td class="num"><input class="cell sm" data-k="p_select" inputmode="decimal"><span class="unit">%</span></td>
           <td class="num" id="n1">—</td>
           <td class="barcol"><div class="bar" id="bar1"></div></td>
         </tr>
         <tr>
-          <td>🚗 Сделали подбор<span class="was" id="h_search">—</span></td>
+          <td>🚗 Сделали подбор</td>
+          <td class="num fact" id="f_search">—</td>
           <td class="num"><input class="cell sm" data-k="p_search" inputmode="decimal"><span class="unit">%</span></td>
           <td class="num" id="n2">—</td>
           <td class="barcol"><div class="bar" id="bar2"></div></td>
         </tr>
         <tr>
-          <td>🅿️ Положили машину в гараж<span class="was" id="h_garage">—</span></td>
+          <td>🅿️ Положили машину в гараж</td>
+          <td class="num fact" id="f_garage">—</td>
           <td class="num"><input class="cell sm" data-k="p_garage" inputmode="decimal"><span class="unit">%</span></td>
           <td class="num" id="n3">—</td>
           <td class="barcol"><div class="bar" id="bar3"></div></td>
         </tr>
         <tr>
-          <td>👀 Дошли до разбора машины в гараже<span class="was" id="h_offer">—</span></td>
+          <td>👀 Дошли до разбора машины в гараже<span class="was">под разбором — кнопка «2,90 €»</span></td>
+          <td class="num fact" id="f_offer">—</td>
           <td class="num"><input class="cell sm" data-k="p_offer" inputmode="decimal"><span class="unit">%</span></td>
           <td class="num" id="n4">—</td>
           <td class="barcol"><div class="bar" id="bar4"></div></td>
         </tr>
         <tr>
           <td>💳 Купили отчёт<span class="was" id="h_buy">—</span></td>
+          <td class="num fact" id="f_paid">—</td>
           <td class="num"><input class="cell sm" data-k="p_buy" inputmode="decimal"><span class="unit">%</span></td>
           <td class="num" id="n5">—</td>
           <td class="barcol"><div class="bar" id="bar5"></div></td>
         </tr>
         <tr>
           <td>Отчётов на одного покупателя<span class="was">по всему сайту: 22 заявки от 18 человек за неделю</span></td>
+          <td class="num">—</td>
           <td class="num">×</td>
           <td class="num"><input class="cell sm" data-k="per_buyer" inputmode="decimal"></td>
           <td class="barcol"></td>
         </tr>
         <tr>
-          <td><b>Отчётов продано в месяц</b></td>
+          <td><b>Отчётов продано</b></td>
+          <td class="num fact" id="f_total">—</td>
           <td class="num"></td>
           <td class="num"><b id="n6">—</b></td>
           <td class="barcol"></td>
         </tr>
-      </table>
+      </table></div>
+      <div class="foot"><b>За выбранные дни</b> — что было на самом деле. <b>В месяц</b> — расчёт: тот же темп на 30 дней, жёлтые клетки можно менять.</div>
       <div class="warn" id="pay_warn" hidden>⚠️ <span id="pay_warn_text"></span> <button class="set" type="button" data-range="pay" data-lavish-action>Считать с включения оплаты</button></div>
-      <div class="foot">Синяя черта под клеткой — цифру поменяли вы; без черты — живая цифра за выбранные дни.</div>
+      <div class="foot">Синяя черта под жёлтой клеткой — цифру поменяли вы; без черты — она посчитана из выбранных дней.</div>
     </div>
   </section>
 
@@ -621,14 +634,18 @@
       $('bar' + j).style.visibility = c.n[j] > 0 ? 'visible' : 'hidden';
     }
 
-    // «сейчас» под каждым шагом — живые цифры за выбранные дни
-    $('h_clicks').textContent = 'сейчас ' + nf(A.clicks) + ' за ' + dWord;
-    $('h_cpc').textContent = 'сейчас ' + money(A.cost, 2) + ' за ' + nf(A.clicks) + ' ' + plural(A.clicks, ['переход', 'перехода', 'переходов']);
-    $('h_select').textContent = 'сейчас ' + nf(A.select) + ' из ' + nf(A.clicks);
-    $('h_search').textContent = 'сейчас ' + nf(A.search) + ' из ' + nf(A.select);
-    $('h_garage').textContent = 'сейчас ' + nf(A.garage) + ' из ' + nf(A.search);
-    $('h_offer').textContent = 'сейчас ' + nf(A.offer) + ' из ' + nf(A.garage) + '; под разбором — кнопка «2,90 €»';
-    $('h_buy').innerHTML = 'сейчас <b>' + nf(A.paid) + ' из ' + nf(A.offer) + '</b>; кнопку «2,90 €» нажали — ' + nf(A.price_tap);
+    // столбец «за выбранные дни» — что было на самом деле
+    $('th_period').innerHTML = 'За ' + dWord + '<span class="was">' + fmtRange(range.from, range.to).replace(/ \d{4}/g, '') + '</span>';
+    $('f_clicks').textContent = nf(A.clicks);
+    $('f_cpc').textContent = A.clicks > 0 ? money(A.cost / A.clicks, 2) : '—';
+    $('h_cpc').textContent = 'за эти дни: ' + money(A.cost, 2) + ' за ' + nf(A.clicks) + ' ' + plural(A.clicks, ['переход', 'перехода', 'переходов']);
+    $('f_select').textContent = nf(A.select);
+    $('f_search').textContent = nf(A.search);
+    $('f_garage').textContent = nf(A.garage);
+    $('f_offer').textContent = nf(A.offer);
+    $('f_paid').textContent = nf(A.paid);
+    $('f_total').textContent = nf(A.paid);
+    $('h_buy').textContent = 'кнопку «2,90 €» нажали — ' + nf(A.price_tap);
     var ps = paySince(), warn = $('pay_warn');
     warn.hidden = !(ps && range.from < ps);
     if (ps) $('pay_warn_text').textContent = 'Платная кнопка «2,90 €» в гараже работает с ' + D(ps).getUTCDate() + ' ' + MG[D(ps).getUTCMonth()] + '. За дни до этого «купили 0» значит «платить было негде».';
