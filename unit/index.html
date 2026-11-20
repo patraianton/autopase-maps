@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Экономика отчётов autopase — считалка</title>
+<style>
+  :root{
+    --bg:#f3f0e8; --card:#ffffff; --ink:#191815; --mute:#6b675e; --line:#dcd7ca;
+    --yellow:#fff1a8; --yellow-b:#d9a400; --red:#c62b1c; --green:#16794a; --amber:#b86a00; --blue:#1d4ed8;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1220px;margin:0 auto;padding:22px 20px 60px}
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  h1{font-size:28px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.02em}
+  .sub{color:var(--mute);font-size:14px;margin-top:6px}
+  h2{font-size:18px;margin:0 0 10px;font-weight:800}
+  .btn{font:inherit;font-size:14px;font-weight:600;border:1.5px solid var(--ink);background:#fff;color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+  .btn:hover{background:var(--ink);color:#fff}
+  .hbtns{display:flex;gap:8px;flex-wrap:wrap}
+  .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+  .tile .lab{font-size:14px;font-weight:700;color:var(--mute)}
+  .tile .big{font-size:44px;font-weight:800;line-height:1.05;letter-spacing:-.03em;margin:6px 0 4px;overflow-wrap:anywhere}
+  .tile .big small{font-size:18px;font-weight:700;letter-spacing:0;color:var(--mute)}
+  .tile .note{font-size:14px;color:var(--mute)}
+  .tile.need{background:#191815;color:#fff;border-color:#191815}
+  .tile.need .lab,.tile.need .note,.tile.need .big small{color:#cfcabd}
+  .red{color:var(--red)} .green{color:var(--green)} .amber{color:var(--amber)}
+  .cover{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:14px}
+  .cover .row{display:flex;justify-content:space-between;gap:12px;font-size:14px;font-weight:700;margin-bottom:6px}
+  .track{height:18px;background:#ece7da;border-radius:9px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--red);border-radius:9px;transition:width .2s}
+  .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:14px;margin-bottom:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+  .hint{display:inline-block;background:var(--yellow);border:1.5px solid var(--yellow-b);border-radius:6px;padding:1px 8px;font-size:13px;font-weight:700}
+  table{width:100%;border-collapse:collapse}
+  td,th{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;font-size:15px}
+  th{font-size:12.5px;color:var(--mute);font-weight:700;text-transform:none}
+  tr:last-child td{border-bottom:0}
+  td.num,th.num{text-align:right;white-space:nowrap}
+  .grp td{background:#f7f4ec;font-weight:800;font-size:13px;color:var(--mute);padding:5px 6px}
+  .was{display:block;font-size:12.5px;color:var(--mute)}
+  .cell{font:inherit;font-weight:700;width:96px;text-align:right;background:var(--yellow);border:1.5px solid var(--yellow-b);border-radius:6px;padding:5px 8px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .cell.sm{width:68px}
+  .cell.bad{border-color:var(--red);background:#ffe1dc}
+  .cell:focus{outline:3px solid #1d4ed855}
+  .unit{color:var(--mute);font-size:13px;margin-left:4px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{font:inherit;font-size:13.5px;font-weight:700;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;cursor:pointer}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  input[type=range]{width:100%;accent-color:#191815;margin-top:8px}
+  .bar{height:12px;border-radius:6px;background:var(--blue);min-width:3px;transition:width .2s}
+  .barcol{width:26%}
+  .truth{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+  .truth .card .q{font-size:14px;font-weight:700;color:var(--mute)}
+  .truth .card .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:6px 0 4px;overflow-wrap:anywhere}
+  .truth .card .note{font-size:14px}
+  .ptable td,.ptable th{font-size:15px}
+  .ptable tr.cur td{background:#fff8d6;font-weight:800}
+  .ptable .set{font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer}
+  .foot{font-size:13.5px;color:var(--mute);margin-top:8px}
+  details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-top:14px}
+  summary{cursor:pointer;font-weight:800}
+  details ul{margin:10px 0 0;padding-left:20px}
+  details li{margin:5px 0;font-size:14.5px}
+  @media (max-width:900px){
+    .tiles,.truth,.grid2{grid-template-columns:minmax(0,1fr)}
+    .tile .big{font-size:36px}
+    .barcol{display:none}
+    .wrap{padding:16px 10px 40px}
+    .card,.tile,.cover,details{padding:12px 12px}
+    td,th{padding:6px 3px;font-size:14px}
+    .cell{width:76px;padding:5px 6px}
+    .cell.sm{width:54px}
+    .ptable{min-width:640px}
+  }
+  .scroll{overflow-x:auto;max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>Сколько отчётов надо продавать</h1>
+      <div class="sub">Живые цифры 17–19 ноября, Латвия, оба варианта. Месяц = эти 3 дня × 10. <span class="hint">жёлтые клетки можно менять</span></div>
+    </div>
+    <div class="hbtns">
+      <button class="btn" type="button" id="copy" data-lavish-action>🔗 Ссылка с этими цифрами</button>
+      <button class="btn" type="button" id="reset" data-lavish-action>↺ Вернуть живые цифры</button>
+    </div>
+  </header>
+
+  <section class="tiles">
+    <div class="tile need">
+      <div class="lab">🎯 Нужно продавать</div>
+      <div class="big"><span id="t_need">—</span> <small>в месяц</small></div>
+      <div class="note" id="t_need_note">—</div>
+    </div>
+    <div class="tile">
+      <div class="lab">🧾 Продаём при такой воронке</div>
+      <div class="big"><span id="t_have">—</span> <small>в месяц</small></div>
+      <div class="note" id="t_have_note">—</div>
+    </div>
+    <div class="tile">
+      <div class="lab">💶 Итог месяца</div>
+      <div class="big" id="t_res">—</div>
+      <div class="note" id="t_res_note">—</div>
+    </div>
+  </section>
+
+  <section class="cover">
+    <div class="row"><span id="cover_lab">Закрыто расходов</span><span id="cover_pct">—</span></div>
+    <div class="track"><div class="fill" id="cover_fill"></div></div>
+  </section>
+
+  <section class="truth">
+    <div class="card">
+      <div class="q">👥 Если людей столько же — купить должны</div>
+      <div class="big" id="a_big">—</div>
+      <div class="note" id="a_note">—</div>
+    </div>
+    <div class="card">
+      <div class="q">🚦 Если покупают так же — нужно посетителей сайта</div>
+      <div class="big" id="b_big">—</div>
+      <div class="note" id="b_note">—</div>
+    </div>
+    <div class="card">
+      <div class="q">🏷️ Если ничего не менять — отчёт должен стоить</div>
+      <div class="big" id="c_big">—</div>
+      <div class="note" id="c_note">—</div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>Цена и расходы</h2>
+      <table>
+        <tr>
+          <td>Цена отчёта</td>
+          <td class="num"><input class="cell" data-k="price" inputmode="decimal" aria-label="Цена отчёта"><span class="unit">€</span></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="range" id="price_range" min="0.99" max="29.99" step="0.5" aria-label="Цена отчёта, ползунок">
+            <div class="chips" id="chips"></div>
+          </td>
+        </tr>
+        <tr class="grp"><td colspan="2">Расходы в месяц</td></tr>
+        <tr><td>mobile.de — доступ к объявлениям</td><td class="num"><input class="cell" data-k="c_mobile" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr><td>AutoScout24 — доступ к объявлениям</td><td class="num"><input class="cell" data-k="c_as24" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr><td>Серверы, сбор объявлений, ИИ</td><td class="num"><input class="cell" data-k="c_infra" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr><td>Реклама Google<span class="was">сейчас тратим около 300 € в месяц</span></td><td class="num"><input class="cell" data-k="c_ads" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr><td><b>Всего расходов</b></td><td class="num"><b id="fixed_sum">—</b></td></tr>
+        <tr><td>Хотим заработать сверху</td><td class="num"><input class="cell" data-k="profit" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr class="grp"><td colspan="2">Что уходит с каждого проданного отчёта</td></tr>
+        <tr><td>Платёжная служба Stripe</td><td class="num"><input class="cell sm" data-k="fee_pct" inputmode="decimal"><span class="unit">%</span> + <input class="cell sm" data-k="fee_fix" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr><td>НДС внутри цены<span class="was">если платим НДС — поставьте 21</span></td><td class="num"><input class="cell sm" data-k="vat" inputmode="decimal"><span class="unit">%</span></td></tr>
+        <tr><td>Изготовление одного отчёта</td><td class="num"><input class="cell sm" data-k="unit_cost" inputmode="decimal"><span class="unit">€</span></td></tr>
+        <tr><td><b>Остаётся с одного отчёта</b></td><td class="num"><b id="net_one">—</b></td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Воронка за месяц</h2>
+      <table>
+        <tr><th>Шаг</th><th class="num">Доля от шага выше</th><th class="num">Человек в месяц</th><th class="barcol"></th></tr>
+        <tr>
+          <td>🌐 Пришли на сайт<span class="was">сейчас 3 800 за 3 дня</span></td>
+          <td class="num">—</td>
+          <td class="num"><input class="cell" data-k="visitors" inputmode="decimal"></td>
+          <td class="barcol"><div class="bar" id="bar0"></div></td>
+        </tr>
+        <tr>
+          <td>🔎 Дошли до страниц подбора<span class="was">сейчас 439 за 3 дня</span></td>
+          <td class="num"><input class="cell sm" data-k="p_select" inputmode="decimal"><span class="unit">%</span></td>
+          <td class="num" id="n1">—</td>
+          <td class="barcol"><div class="bar" id="bar1"></div></td>
+        </tr>
+        <tr>
+          <td>🚗 Сделали подбор<span class="was">сейчас 222 за 3 дня</span></td>
+          <td class="num"><input class="cell sm" data-k="p_search" inputmode="decimal"><span class="unit">%</span></td>
+          <td class="num" id="n2">—</td>
+          <td class="barcol"><div class="bar" id="bar2"></div></td>
+        </tr>
+        <tr>
+          <td>🅿️ Положили машину в гараж<span class="was">сейчас 146 человек, 153 машины за 3 дня — 51 машина в день</span></td>
+          <td class="num"><input class="cell sm" data-k="p_garage" inputmode="decimal"><span class="unit">%</span></td>
+          <td class="num" id="n3">—</td>
+          <td class="barcol"><div class="bar" id="bar3"></div></td>
+        </tr>
+        <tr>
+          <td>👀 Открыли гараж — там кнопка отчёта<span class="was">сейчас 126 за 3 дня</span></td>
+          <td class="num"><input class="cell sm" data-k="p_offer" inputmode="decimal"><span class="unit">%</span></td>
+          <td class="num" id="n4">—</td>
+          <td class="barcol"><div class="bar" id="bar4"></div></td>
+        </tr>
+        <tr>
+          <td>💳 Купили отчёт<span class="was">сейчас 10 человек за 3 дня берут <b>бесплатный</b>; оплат — 0</span></td>
+          <td class="num"><input class="cell sm" data-k="p_buy" inputmode="decimal"><span class="unit">%</span></td>
+          <td class="num" id="n5">—</td>
+          <td class="barcol"><div class="bar" id="bar5"></div></td>
+        </tr>
+        <tr>
+          <td>Отчётов на одного покупателя<span class="was">сейчас 22 заявки от 18 человек за неделю</span></td>
+          <td class="num">×</td>
+          <td class="num"><input class="cell sm" data-k="per_buyer" inputmode="decimal"></td>
+          <td class="barcol"></td>
+        </tr>
+        <tr>
+          <td><b>Отчётов продано в месяц</b></td>
+          <td class="num"></td>
+          <td class="num"><b id="n6">—</b></td>
+          <td class="barcol"></td>
+        </tr>
+      </table>
+      <div class="foot">Полоски справа — для глаза, не в масштабе: иначе нижние не видно.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Та же воронка при разной цене</h2>
+    <div class="scroll"><table class="ptable">
+      <thead>
+        <tr>
+          <th>Цена</th>
+          <th class="num">Остаётся с отчёта</th>
+          <th class="num">Нужно отчётов в месяц</th>
+          <th class="num">В день</th>
+          <th class="num">Купить должны из 100 открывших гараж</th>
+          <th class="num">Или посетителей больше</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="ptbody"></tbody>
+    </table></div>
+    <div class="foot">Таблица считает, что людей и доли в воронке столько же, сколько в жёлтых клетках. В жизни при цене выше покупают реже.</div>
+  </section>
+
+  <details>
+    <summary>Откуда цифры и что в них неточно</summary>
+    <ul>
+      <li><b>Период:</b> 17, 18 и 19 ноября по Риге — три полных дня с тех пор, как заработал гараж в варианте Жени. Только Латвия. Оба варианта вместе. Месяц получен умножением на 10.</li>
+      <li><b>Посетители, подборы, открытия гаража</b> — счётчик посещений PostHog: сайт 3 800 человек, страницы подбора 439, подбор сделали 222, гараж открыли 126.</li>
+      <li><b>Гараж</b> — из базы: вариант Жени 130 человек и 133 машины (без команды и проверок), вариант Антона 16 человек и 20 машин. Вместе 153 машины за 3 дня = 51 в день.</li>
+      <li><b>Примерно треть машин кладут в гараж прямо со страницы машины, без подбора.</b> Поэтому доля «положили в гараж» от «сделали подбор» выглядит выше, чем есть на самом деле у тех, кто подбирал.</li>
+      <li><b>«Увидел предложение отчёта»</b> — точной отметки в гараже Жени нет. Ближайшее, что есть, — «открыл страницу гаража». В гараже Антона отметка «блок отчёта показан» есть: 15 человек за 3 дня.</li>
+      <li><b>Отчёты:</b> за 3 дня 12 заявок на бесплатный отчёт примерно от 10 человек. За неделю 13–19 ноября — 22 заявки от 18 человек.</li>
+      <li><b>Оплаты:</b> настоящих оплат не было ни одной. Страницу оплаты за неделю открыли 3 человека, один начал платить и не закончил.</li>
+      <li><b>Неделя 13–19 ноября для сравнения:</b> сайт 11 152 человека, страницы подбора 876, подбор сделали 518.</li>
+      <li><b>Реклама Google:</b> с 12 ноября 240 переходов за 81 € — 34 цента за переход.</li>
+      <li><b>mobile.de:</b> вы назвали 1 000 долларов — в клетке стоит 1 000 €.</li>
+      <li><b>Stripe:</b> 1,5 % + 0,25 € за платёж картой из Европы. При цене 2,99 € это каждый десятый евро.</li>
+    </ul>
+  </details>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'ap-unit-econ-v2';
+  var DEF = {
+    price: 2.99,
+    c_mobile: 1000, c_as24: 1000, c_infra: 1000, c_ads: 300, profit: 0,
+    fee_pct: 1.5, fee_fix: 0.25, vat: 0, unit_cost: 0,
+    visitors: 38000, p_select: 11.6, p_search: 50.6, p_garage: 65.8, p_offer: 86.3, p_buy: 8, per_buyer: 1.2
+  };
+  var PRICES = [1.9, 2.99, 4.99, 9.99, 14.99, 19.99];
+  var DEC = { price: 2, fee_pct: 2, fee_fix: 2, vat: 1, unit_cost: 2, p_select: 1, p_search: 1, p_garage: 1, p_offer: 1, p_buy: 1, per_buyer: 2 };
+  var s = {};
+
+  function $(id) { return document.getElementById(id); }
+  function valid(k, v) {
+    return typeof v === 'number' && isFinite(v) && v >= 0 && !(k.indexOf('p_') === 0 && v > 100) && !(k === 'per_buyer' && v <= 0);
+  }
+  // цифры из ссылки (после #) важнее сохранённых в браузере: так ссылку с цифрами можно переслать
+  function fromHash() {
+    var out = {}, h = (location.hash || '').replace(/^#/, '');
+    if (!h) return out;
+    try {
+      new URLSearchParams(h).forEach(function (v, k) {
+        var n = parseFloat(v);
+        if (Object.prototype.hasOwnProperty.call(DEF, k) && valid(k, n)) out[k] = n;
+      });
+    } catch (e) {}
+    return out;
+  }
+  function load() {
+    var j = {};
+    try { j = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { j = {}; }
+    var h = fromHash(), useHash = Object.keys(h).length > 0;
+    for (var k in DEF) {
+      if (useHash) s[k] = Object.prototype.hasOwnProperty.call(h, k) ? h[k] : DEF[k];
+      else s[k] = valid(k, j[k]) ? j[k] : DEF[k];
+    }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+    try {
+      var p = new URLSearchParams();
+      for (var k in DEF) if (Math.abs(s[k] - DEF[k]) > 1e-9) p.set(k, String(Math.round(s[k] * 1000) / 1000));
+      var q = p.toString();
+      history.replaceState(null, '', q ? '#' + q : location.pathname + location.search);
+    } catch (e) {}
+  }
+  function copyText(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function nf(n, d) {
+    if (!isFinite(n)) return '∞';
+    return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 0, maximumFractionDigits: d || 0 }).format(Math.abs(n));
+  }
+  function signed(n, d) { return (n < 0 ? '−' : '') + nf(n, d); }
+  function money(n, d) {
+    if (!isFinite(n)) return '∞';
+    var f = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }).format(Math.abs(n));
+    return (n < 0 ? '−' : '') + f + ' €';
+  }
+  function plural(n, forms) {
+    var a = Math.abs(Math.round(n)) % 100, b = a % 10;
+    if (a > 10 && a < 20) return forms[2];
+    if (b > 1 && b < 5) return forms[1];
+    if (b === 1) return forms[0];
+    return forms[2];
+  }
+  function times(m) {
+    if (!isFinite(m)) return 'бесконечно';
+    if (m >= 10) { var r = Math.round(m); return 'в ' + nf(r) + ' ' + plural(r, ['раз', 'раза', 'раз']); }
+    var v = Math.round(m * 10) / 10;
+    if (v === Math.round(v)) return 'в ' + nf(v) + ' ' + plural(v, ['раз', 'раза', 'раз']);
+    return 'в ' + nf(v, 1) + ' раза';
+  }
+  function netOf(price) { return price / (1 + s.vat / 100) - price * s.fee_pct / 100 - s.fee_fix - s.unit_cost; }
+
+  function calc() {
+    var fixed = s.c_mobile + s.c_as24 + s.c_infra + s.c_ads;
+    var target = fixed + s.profit;
+    var net = netOf(s.price);
+    var n1 = s.visitors * s.p_select / 100;
+    var n2 = n1 * s.p_search / 100;
+    var n3 = n2 * s.p_garage / 100;
+    var n4 = n3 * s.p_offer / 100;
+    var n5 = n4 * s.p_buy / 100;
+    var reports = n5 * s.per_buyer;
+    var need = net > 0 ? target / net : Infinity;
+    var denom = 1 / (1 + s.vat / 100) - s.fee_pct / 100;
+    return {
+      fixed: fixed, target: target, net: net, n: [s.visitors, n1, n2, n3, n4, n5], reports: reports, need: need,
+      revenue: reports * s.price, margin: reports * net, result: reports * net - fixed,
+      needBuyPct: (n4 > 0 && s.per_buyer > 0) ? need / s.per_buyer / n4 * 100 : Infinity,
+      mult: reports > 0 ? need / reports : Infinity,
+      bePrice: (reports > 0 && denom > 0) ? (target / reports + s.fee_fix + s.unit_cost) / denom : Infinity
+    };
+  }
+
+  function setCls(el, cls) { el.classList.remove('red', 'green', 'amber'); if (cls) el.classList.add(cls); }
+
+  function render() {
+    var c = calc();
+    var targetWord = s.profit > 0 ? 'расходы и ' + money(s.profit) + ' сверху' : money(c.fixed) + ' расходов';
+
+    // плитки
+    $('t_need').textContent = nf(Math.ceil(c.need));
+    $('t_need_note').textContent = c.net > 0
+      ? nf(Math.ceil(c.need / 30)) + ' в день — чтобы покрыть ' + targetWord + ' при цене ' + money(s.price, 2)
+      : 'При такой цене с отчёта ничего не остаётся: всё съедают комиссия и изготовление';
+    $('t_have').textContent = nf(c.reports);
+    $('t_have_note').textContent = nf(c.reports / 30, 1) + ' в день. Настоящих оплат пока 0 — это расчёт';
+    $('t_res').textContent = money(c.result);
+    setCls($('t_res'), c.result < 0 ? 'red' : 'green');
+    $('t_res_note').textContent = 'продажи ' + money(c.revenue) + ' − с отчётов уходит ' + money(c.revenue - c.margin) + ' − расходы ' + money(c.fixed);
+
+    // полоса покрытия
+    var pct = c.target > 0 ? c.margin / c.target * 100 : 100;
+    var shown = Math.max(0, Math.min(100, pct));
+    $('cover_lab').textContent = s.profit > 0 ? 'Закрыто из расходов и желаемого заработка' : 'Закрыто расходов';
+    $('cover_pct').textContent = nf(Math.max(0, pct), pct < 10 ? 1 : 0) + ' %';
+    $('cover_fill').style.width = shown + '%';
+    $('cover_fill').style.background = pct >= 100 ? 'var(--green)' : (pct >= 50 ? 'var(--amber)' : 'var(--red)');
+
+    // три условия
+    var a = $('a_big'), an = $('a_note');
+    a.textContent = isFinite(c.needBuyPct) ? nf(Math.ceil(c.needBuyPct)) + ' из 100' : '—';
+    if (c.needBuyPct > 100) { setCls(a, 'red'); an.textContent = 'Не хватит людей: даже если купит каждый, кто открыл гараж, отчётов будет меньше, чем нужно.'; }
+    else if (c.needBuyPct > s.p_buy) { setCls(a, 'amber'); an.textContent = 'из тех, кто открыл гараж. В жёлтой клетке сейчас ' + nf(s.p_buy, 1) + ' из 100.'; }
+    else { setCls(a, 'green'); an.textContent = 'Сходится: в жёлтой клетке ' + nf(s.p_buy, 1) + ' из 100.'; }
+
+    var b = $('b_big'), bn = $('b_note');
+    var needVis = s.visitors * c.mult;
+    b.textContent = isFinite(needVis) ? nf(Math.ceil(needVis / 1000) * 1000) : '—';
+    if (c.mult > 1) { setCls(b, c.mult > 3 ? 'red' : 'amber'); bn.textContent = 'в месяц — ' + times(c.mult) + ' больше, чем сейчас (' + nf(s.visitors) + ').'; }
+    else { setCls(b, 'green'); bn.textContent = 'в месяц. Нынешних ' + nf(s.visitors) + ' хватает.'; }
+
+    var cb = $('c_big'), cn = $('c_note');
+    cb.textContent = isFinite(c.bePrice) ? money(c.bePrice, c.bePrice < 100 ? 2 : 0) : '—';
+    setCls(cb, c.bePrice > s.price ? 'red' : 'green');
+    cn.textContent = 'при ' + nf(c.reports) + ' ' + plural(c.reports, ['отчёте', 'отчётах', 'отчётах']) + ' в месяц. Сейчас цена ' + money(s.price, 2) + '.';
+
+    // таблица расходов и воронка
+    $('fixed_sum').textContent = money(c.fixed);
+    $('net_one').textContent = money(c.net, 2);
+    setCls($('net_one'), c.net > 0 ? '' : 'red');
+    for (var i = 1; i <= 5; i++) $('n' + i).textContent = nf(c.n[i]);
+    $('n6').textContent = nf(c.reports);
+    for (var j = 0; j <= 5; j++) {
+      var w = s.visitors > 0 ? Math.sqrt(Math.max(0, c.n[j]) / s.visitors) * 100 : 0;
+      $('bar' + j).style.width = Math.max(0, Math.min(100, w)) + '%';
+    }
+
+    // цены
+    var list = PRICES.slice();
+    var has = list.some(function (p) { return Math.abs(p - s.price) < 0.005; });
+    if (!has) list.push(s.price);
+    list.sort(function (x, y) { return x - y; });
+    var html = '';
+    list.forEach(function (p) {
+      var net = netOf(p), cur = Math.abs(p - s.price) < 0.005;
+      var need = net > 0 ? c.target / net : Infinity;
+      var buy = (c.n[4] > 0 && s.per_buyer > 0) ? need / s.per_buyer / c.n[4] * 100 : Infinity;
+      var mult = c.reports > 0 ? need / c.reports : Infinity;
+      html += '<tr class="' + (cur ? 'cur' : '') + '">' +
+        '<td>' + money(p, 2) + (cur ? ' ← сейчас' : '') + '</td>' +
+        '<td class="num' + (net > 0 ? '' : ' red') + '">' + money(net, 2) + '</td>' +
+        '<td class="num">' + (isFinite(need) ? nf(Math.ceil(need)) : '—') + '</td>' +
+        '<td class="num">' + (isFinite(need) ? nf(Math.ceil(need / 30)) : '—') + '</td>' +
+        '<td class="num ' + (buy > 100 ? 'red' : (buy > s.p_buy ? 'amber' : 'green')) + '">' + (isFinite(buy) ? nf(Math.ceil(buy)) + (buy > 100 ? ' — людей не хватит' : '') : '—') + '</td>' +
+        '<td class="num">' + (mult > 1 ? times(mult) : 'хватает') + '</td>' +
+        '<td class="num">' + (cur ? '' : '<button class="set" type="button" data-lavish-action data-price="' + p + '">поставить</button>') + '</td>' +
+        '</tr>';
+    });
+    $('ptbody').innerHTML = html;
+
+    // кнопки цены и ползунок
+    var chips = '';
+    PRICES.forEach(function (p) {
+      chips += '<button class="chip' + (Math.abs(p - s.price) < 0.005 ? ' on' : '') + '" type="button" data-lavish-action data-price="' + p + '">' + money(p, 2) + '</button>';
+    });
+    $('chips').innerHTML = chips;
+    var range = $('price_range');
+    if (document.activeElement !== range) range.value = Math.max(0.99, Math.min(29.99, s.price));
+  }
+
+  function show(k) { return String(Math.round(s[k] * 1000) / 1000).replace('.', ','); }
+  function fillInputs(skip) {
+    document.querySelectorAll('input.cell').forEach(function (el) {
+      if (el === skip) return;
+      el.value = show(el.dataset.k);
+      el.classList.remove('bad');
+    });
+  }
+  function parse(txt) {
+    var t = String(txt).replace(/\s| /g, '').replace(',', '.');
+    if (t === '' || !/^\d*\.?\d*$/.test(t)) return NaN;
+    return parseFloat(t);
+  }
+  function setPrice(p) { s.price = Math.round(p * 100) / 100; save(); fillInputs(); render(); }
+
+  document.addEventListener('input', function (e) {
+    var el = e.target;
+    if (el.id === 'price_range') { s.price = Math.round(parseFloat(el.value) * 100) / 100; save(); fillInputs(); render(); return; }
+    if (!el.classList || !el.classList.contains('cell')) return;
+    var k = el.dataset.k, v = parse(el.value);
+    if (!isFinite(v) || v < 0 || (k.indexOf('p_') === 0 && v > 100) || (k === 'per_buyer' && v <= 0)) { el.classList.add('bad'); return; }
+    el.classList.remove('bad');
+    s[k] = v; save(); render();
+  });
+  document.addEventListener('focusout', function (e) {
+    var el = e.target;
+    if (el.classList && el.classList.contains('cell')) { el.value = show(el.dataset.k); el.classList.remove('bad'); }
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-price]') : null;
+    if (t) { setPrice(parseFloat(t.dataset.price)); return; }
+    if (e.target.id === 'reset') { for (var k in DEF) s[k] = DEF[k]; save(); fillInputs(); render(); return; }
+    if (e.target.id === 'copy') {
+      save();
+      var btn = e.target, url = location.href;
+      var done = function () { btn.textContent = '✓ Ссылка скопирована'; setTimeout(function () { btn.textContent = '🔗 Ссылка с этими цифрами'; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { copyText(url); done(); });
+      else { copyText(url); done(); }
+    }
+  });
+
+  load(); save(); fillInputs(); render();
+  window.__apUnitEcon = { state: s, calc: calc, DEC: DEC };
+})();
+</script>
+</body>
+</html>
