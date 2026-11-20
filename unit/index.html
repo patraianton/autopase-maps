@@ -272,7 +272,7 @@
           <td class="barcol"><div class="bar" id="bar3"></div></td>
         </tr>
         <tr>
-          <td>👀 Дошли до разбора машины в гараже<span class="was">под разбором — кнопка «2,90 €»</span></td>
+          <td>👀 Дождались разбора машины в гараже<span class="was">разбор собирается около минуты; кнопка «2,90 €» — ниже, в конце карточки</span></td>
           <td class="num fact" id="f_offer">—</td>
           <td class="num"><input class="cell sm" data-k="p_offer" inputmode="decimal"><span class="unit">%</span></td>
           <td class="num" id="n4">—</td>
@@ -315,8 +315,8 @@
           <th class="num">Остаётся с отчёта</th>
           <th class="num">Нужно отчётов в месяц</th>
           <th class="num">В день</th>
-          <th class="num">Реклама окупит себя, если купят из 100 дошедших до разбора</th>
-          <th class="num">Все расходы покроются, если купят из 100 дошедших до разбора</th>
+          <th class="num">Реклама окупит себя, если купят из 100 дождавшихся разбора</th>
+          <th class="num">Все расходы покроются, если купят из 100 дождавшихся разбора</th>
           <th></th>
         </tr>
       </thead>
@@ -332,7 +332,8 @@
       <li><b>Реклама Google</b> — из рекламного кабинета, только три кампании автоподбора. Кампания «C2 · Эстония» из того же кабинета не про автоподбор — её здесь нет. День — как в кабинете, по Риге.</li>
       <li><b>Люди считаются по дню первого прихода по рекламе.</b> Пришёл 14-го, а машину в гараж положил 16-го — он весь в 14-м. Поэтому у самых свежих дней гаражей и покупок ещё может прибавиться.</li>
       <li><b>Переходов больше, чем людей на странице подбора:</b> часть уходит, не дождавшись загрузки, и счётчик посещений их не видит.</li>
-      <li><b>«Дошли до разбора»</b> — в гараже Антона человеку показан бесплатный разбор машины. Кнопка «Детальный отчёт — 2,90 €» стоит под разбором. Видел ли человек саму цену, не отмечается: отмечается только нажатие на кнопку.</li>
+      <li><b>«Дождались разбора»</b> — в гараже Антона человеку показан готовый бесплатный разбор машины. Разбор собирается около минуты после «В гараж»; пока он собирается, на странице его нет. Кто ушёл раньше — разбора не видел.</li>
+      <li><b>Кнопка «Детальный отчёт — 2,90 €»</b> стоит не под разбором, а в конце карточки машины: после «Сравните с другими из вашей пятёрки» и «Спросим продавца — бесплатно». Видел ли человек её, не отмечается: отмечается только нажатие.</li>
       <li><b>Платная кнопка включена вечером 16 ноября</b> и есть только у машин со ссылкой на объявление продавца. За всё время рекламы её не нажал никто. Поэтому «купили 0» пока значит «не покупают или не замечают кнопку» — отличить нельзя.</li>
       <li><b>Оплаты</b> — по нашему суточному счёту в базе, появляются на следующий день. Сегодняшний день в рекламе неполный.</li>
       <li><b>«Отчётов на одного покупателя» — 1,2</b> взято по всему сайту: по рекламе покупок нет, считать не из чего.</li>
@@ -345,7 +346,7 @@
 </div>
 
 <!-- числа по дням на момент выкладки; страница сама подтягивает свежие из data.json рядом -->
-<script id="snapshot" type="application/json">/*SNAPSHOT_START*/{"built_at":"2026-11-20T12:22:14Z","today":"2026-11-20","paid_until":"2026-11-19","pay_since":"2026-11-17","campaigns":["AP · Vācija · portāli LV","AP · Vācija · tiešie (lv+ru)","AP · Германия · порталы RU"],"days":[{"d":"2026-11-13","imp":102,"clicks":30,"cost":14.14,"people":20,"select":19,"search":9,"saw":9,"garage":1,"offer":1,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-14","imp":68,"clicks":29,"cost":7.95,"people":18,"select":16,"search":10,"saw":8,"garage":0,"offer":0,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-15","imp":120,"clicks":24,"cost":7.55,"people":15,"select":15,"search":7,"saw":7,"garage":0,"offer":0,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-16","imp":113,"clicks":31,"cost":7.56,"people":20,"select":19,"search":13,"saw":12,"garage":1,"offer":1,"report_open":1,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-17","imp":119,"clicks":33,"cost":6.88,"people":25,"select":23,"search":14,"saw":14,"garage":3,"offer":3,"report_open":1,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-18","imp":133,"clicks":38,"cost":7.12,"people":25,"select":23,"search":12,"saw":10,"garage":2,"offer":2,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-19","imp":161,"clicks":36,"cost":7.26,"people":24,"select":23,"search":11,"saw":11,"garage":2,"offer":2,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-20","imp":118,"clicks":18,"cost":3.97,"people":10,"select":10,"search":4,"saw":4,"garage":2,"offer":2,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0}]}/*SNAPSHOT_END*/</script>
+<script id="snapshot" type="application/json">/*SNAPSHOT_START*/{"built_at":"2026-11-20T12:45:44Z","today":"2026-11-20","paid_until":"2026-11-19","pay_since":"2026-11-17","campaigns":["AP · Vācija · portāli LV","AP · Vācija · tiešie (lv+ru)","AP · Германия · порталы RU"],"days":[{"d":"2026-11-13","imp":102,"clicks":30,"cost":14.14,"people":20,"select":19,"search":9,"saw":9,"garage":1,"offer":0,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-14","imp":68,"clicks":29,"cost":7.95,"people":18,"select":16,"search":10,"saw":8,"garage":0,"offer":0,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-15","imp":120,"clicks":24,"cost":7.55,"people":15,"select":15,"search":7,"saw":7,"garage":0,"offer":0,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-16","imp":113,"clicks":31,"cost":7.56,"people":20,"select":19,"search":13,"saw":12,"garage":1,"offer":1,"report_open":1,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-17","imp":119,"clicks":33,"cost":6.88,"people":25,"select":23,"search":14,"saw":14,"garage":3,"offer":3,"report_open":1,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-18","imp":133,"clicks":38,"cost":7.12,"people":25,"select":23,"search":12,"saw":10,"garage":2,"offer":0,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-19","imp":161,"clicks":36,"cost":7.26,"people":24,"select":23,"search":11,"saw":11,"garage":2,"offer":1,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0},{"d":"2026-11-20","imp":123,"clicks":19,"cost":4.16,"people":11,"select":11,"search":5,"saw":5,"garage":3,"offer":2,"report_open":0,"free":0,"price_tap":0,"pay_page":0,"pay_click":0,"paid":0}]}/*SNAPSHOT_END*/</script>
 
 <script>
 (function () {
@@ -600,11 +601,11 @@
     if (!isFinite(mb.ads) || mb.ads > 100) {
       b.textContent = isFinite(mb.ads) ? nf(Math.ceil(mb.ads)) + ' из 100' : 'не выйдет';
       setCls(b, 'red');
-      bn.textContent = isFinite(mb.ads) ? 'Не окупится при этой цене, даже если купит каждый, кто дошёл до разбора в гараже.' : 'За эти дни до разбора машины в гараже не дошёл никто.';
+      bn.textContent = isFinite(mb.ads) ? 'Не окупится при этой цене, даже если купит каждый, кто дождался разбора в гараже.' : 'За эти дни разбора машины в гараже не дождался никто.';
     } else {
       b.textContent = nf(Math.ceil(mb.ads)) + ' из 100';
       setCls(b, mb.ads > s.p_buy ? 'amber' : 'green');
-      bn.textContent = 'из тех, кто дошёл до разбора в гараже. В жёлтой клетке сейчас ' + nf(s.p_buy, 1) + ' из 100.';
+      bn.textContent = 'из тех, кто дождался разбора в гараже. В жёлтой клетке сейчас ' + nf(s.p_buy, 1) + ' из 100.';
     }
 
     var cb = $('c_big'), cn = $('c_note');
@@ -651,7 +652,7 @@
     if (ps) $('pay_warn_text').textContent = 'Платная кнопка «2,90 €» в гараже работает с ' + D(ps).getUTCDate() + ' ' + MG[D(ps).getUTCMonth()] + '. За дни до этого «купили 0» значит «платить было негде».';
     $('d_range').innerHTML = '<b>За выбранные дни</b> (' + fmtRange(range.from, range.to) + ', ' + dWord + '): показов ' + nf(A.imp) + ', переходов ' + nf(A.clicks) +
       ', расход ' + money(A.cost, 2) + '. Счётчик посещений увидел ' + nf(A.people) + ' ' + plural(A.people, ['человека', 'человек', 'человек']) + ', страницу подбора открыли ' + nf(A.select) +
-      ', подбор сделали ' + nf(A.search) + ', машины увидели ' + nf(A.saw) + ', в гараж положили ' + nf(A.garage) + ', до разбора в гараже дошли ' + nf(A.offer) + ', разбор раскрыли ' + nf(A.report_open) + ', кнопку «2,90 €» нажали ' + nf(A.price_tap) +
+      ', подбор сделали ' + nf(A.search) + ', машины увидели ' + nf(A.saw) + ', в гараж положили ' + nf(A.garage) + ', готового разбора в гараже дождались ' + nf(A.offer) + ', разбор раскрыли ' + nf(A.report_open) + ', кнопку «2,90 €» нажали ' + nf(A.price_tap) +
       ', бесплатный отчёт заказали ' + nf(A.free) + ', на страницу оплаты зашли ' + nf(A.pay_page) + ', оплатили ' + nf(A.paid) + '.';
 
     // клетки, которые поменял человек
