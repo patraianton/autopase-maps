@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-21T07:20:01Z",
+ "built_at": "2026-11-21T11:05:15Z",
  "weeks": [
   {
    "start": "2026-11-13T22:00:00Z",
@@ -310,37 +310,37 @@
   "ads": {
    "ok": true,
    "since": "2026-11-12",
-   "impressions": 1413,
-   "clicks": 284,
-   "cost_eur": 93.84,
+   "impressions": 1474,
+   "clicks": 296,
+   "cost_eur": 96.15,
    "campaigns": [
     {
      "name": "AP · Vācija · tiešie (lv+ru)",
      "status": "ENABLED",
-     "impressions": 461,
-     "clicks": 108,
-     "cost_eur": 28.41
+     "impressions": 475,
+     "clicks": 112,
+     "cost_eur": 29.26
     },
     {
      "name": "AP · Vācija · portāli LV",
      "status": "ENABLED",
-     "impressions": 338,
-     "clicks": 85,
-     "cost_eur": 19.46
+     "impressions": 343,
+     "clicks": 88,
+     "cost_eur": 19.85
     },
     {
      "name": "AP · Германия · порталы RU",
      "status": "ENABLED",
-     "impressions": 255,
-     "clicks": 71,
-     "cost_eur": 19.38
+     "impressions": 279,
+     "clicks": 76,
+     "cost_eur": 20.68
     },
     {
      "name": "C2 · Эстония · сообщество и акселератор (RU)",
      "status": "ENABLED",
-     "impressions": 359,
+     "impressions": 377,
      "clicks": 20,
-     "cost_eur": 26.59
+     "cost_eur": 26.36
     }
    ]
   },
@@ -351,5 +351,15 @@
    "paid_live": 0
   },
   "people_until": "2026-11-20T22:00:00+00:00"
+ },
+ "quota123": {
+  "ok": true,
+  "mode": "test",
+  "total": 2,
+  "days": 14,
+  "db": [],
+  "events": [],
+  "ph_ok": true,
+  "built_at": "2026-11-21T11:05:34Z"
  }
 }
