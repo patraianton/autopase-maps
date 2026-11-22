@@ -1,6 +1,6 @@
 {
- "built_at": "2026-11-22T21:25:04Z",
- "today": "2026-11-22",
+ "built_at": "2026-11-22T22:25:03Z",
+ "today": "2026-11-23",
  "paid_until": "2026-11-21",
  "pay_since": "2026-11-17",
  "campaigns": [
@@ -184,6 +184,24 @@
    "offer": 1,
    "report_open": 1,
    "free": 1,
+   "price_tap": 0,
+   "pay_page": 0,
+   "pay_click": 0,
+   "paid": 0
+  },
+  {
+   "d": "2026-11-23",
+   "imp": 0,
+   "clicks": 0,
+   "cost": 0.0,
+   "people": 0,
+   "select": 0,
+   "search": 0,
+   "saw": 0,
+   "garage": 0,
+   "offer": 0,
+   "report_open": 0,
+   "free": 0,
    "price_tap": 0,
    "pay_page": 0,
    "pay_click": 0,
