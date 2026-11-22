@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-22T11:25:03Z",
+ "built_at": "2026-11-22T12:25:04Z",
  "today": "2026-11-22",
  "paid_until": "2026-11-21",
  "pay_since": "2026-11-17",
@@ -173,11 +173,11 @@
   },
   {
    "d": "2026-11-22",
-   "imp": 60,
-   "clicks": 18,
-   "cost": 2.95,
-   "people": 15,
-   "select": 12,
+   "imp": 67,
+   "clicks": 21,
+   "cost": 3.44,
+   "people": 17,
+   "select": 13,
    "search": 7,
    "saw": 7,
    "garage": 0,
