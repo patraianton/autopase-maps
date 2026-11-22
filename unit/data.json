@@ -1,7 +1,7 @@
 {
- "built_at": "2026-11-22T06:25:03Z",
+ "built_at": "2026-11-22T07:25:04Z",
  "today": "2026-11-22",
- "paid_until": "2026-11-20",
+ "paid_until": "2026-11-21",
  "pay_since": "2026-11-17",
  "campaigns": [
   "AP · Vācija · portāli LV",
@@ -173,11 +173,11 @@
   },
   {
    "d": "2026-11-22",
-   "imp": 23,
-   "clicks": 8,
-   "cost": 1.59,
-   "people": 6,
-   "select": 5,
+   "imp": 28,
+   "clicks": 9,
+   "cost": 1.71,
+   "people": 8,
+   "select": 6,
    "search": 4,
    "saw": 4,
    "garage": 0,
