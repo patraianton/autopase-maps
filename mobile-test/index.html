@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Мобильная версия: карточка авто и результаты — варианты</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f5;color:#0f172a;font:15px/1.45 Inter,Segoe UI,Arial,sans-serif}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:20px;margin:0 0 4px}
+.top{padding:24px 28px 8px}
+.top p{margin:4px 0;color:#475569;max-width:900px}
+section{padding:20px 28px 36px;border-top:3px solid #cbd5e1;margin-top:18px}
+.pat{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px 16px;max-width:980px;margin:10px 0 18px;color:#334155}
+.pat b{color:#0f172a}
+.pat ul{margin:6px 0 0 18px;padding:0}
+.row{display:flex;gap:22px;overflow-x:auto;align-items:flex-start;padding-bottom:10px}
+.col{flex:none;width:340px}
+.col h3{margin:0;font-size:16px}
+.col .one{font-size:13px;color:#334155;min-height:92px;margin:4px 0 10px}
+.col.now h3{color:#9a3412}
+.col img{width:340px;height:auto;display:block;border:1px solid #cbd5e1;border-radius:10px;background:#fff}
+.lbl{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;margin:6px 0 6px}
+.cap{font-size:13px;color:#64748b;margin:14px 0 8px}
+a{color:#1d4ed8}
+</style></head><body>
+<div class="top">
+<h1>Мобильная версия autopase.lv: карточка авто и результаты</h1>
+<p>Это только макеты: код сайта не менялся. Все надписи и блоки взяты с живого сайта, меняются только порядок, размер, шрифты и отступы. Ширина экрана — как у iPhone (390 пикселей). «Как сейчас» — настоящие снимки живого сайта в версии Жени (Chromium, 390×844).</p>
+<p>Во всех вариантах карточки кнопка «В гараж» стоит на первом экране рядом с ценой. Сейчас она в самом низу карточки: с карточки в гараж ставят 0,2 % мобильных посетителей против 7,2 % на компьютере.</p>
+</div>
+
+<section>
+<h2>1. Карточка авто</h2>
+<div class="pat"><b>Что общего у больших площадок (27 снимков Жени):</b>
+<ul>
+<li>Фото — сразу под шапкой, цена и название сразу под фото или над ним; рекламные и сервисные блоки — ниже данных.</li>
+<li>Ключевые параметры — сеткой 2×2 с иконками или таблицей «название — значение» в одну строку; все шрифты одного семейства, 3–4 размера.</li>
+<li>Главная кнопка действия закреплена или стоит рядом с ценой (у autoplius — нижняя панель с ценой, у mobile.de — две кнопки под ценой).</li>
+<li>Отчёт об истории — зелёная метка на фото и отдельный блок после данных, а не перед ними.</li>
+<li>Ряд значков действий (сохранить, поделиться, сравнить, пожаловаться), похожие объявления — в самом низу.</li>
+</ul></div>
+<div class="lbl">Первый экран</div>
+<div class="row">
+<div class="col now"><h3>Как сейчас</h3><div class="one">Сверху — большой блок отчёта с e-mail, потом фото; «В гараж» — только в самом низу карточки, после фото, описания и похожих машин.</div><img src="png/now-card-first.png" alt=""></div>
+<div class="col"><h3>Вариант 1</h3><div class="one">Фото сразу под шапкой, затем название, цена и 4 параметра сеткой; «В гараж» — в нижней панели рядом с ценой, видна всегда; блок отчёта перенесён ниже «Цена и рынок»; одни шрифты и отступы.</div><img src="png/card-v1-first.png" alt=""></div>
+<div class="col"><h3>Вариант 2</h3><div class="one">Название, цена и кнопка «В гараж» в одной строке вверху; ниже фото и таблица параметров как у auto24; разделы с серыми заголовками, отчёт — после данных.</div><img src="png/card-v2-first.png" alt=""></div>
+<div class="col"><h3>Вариант 3</h3><div class="one">Под ценой две кнопки в ряд — «В гараж» и «Открыть оригинал на ss.lv» (как «Позвонить / Написать» у mobile.de); «Цена и рынок» и отчёт — раскрывающиеся карточки после параметров.</div><img src="png/card-v3-first.png" alt=""></div>
+</div>
+<div class="cap">Вся страница (до блока «Все марки →»; подвал сайта одинаков во всех вариантах и не показан)</div>
+<div class="row">
+<div class="col now"><h3>Как сейчас</h3><img src="png/now-card-full.png" alt=""></div>
+<div class="col"><h3>Вариант 1</h3><img src="png/card-v1-full.png" alt=""></div>
+<div class="col"><h3>Вариант 2</h3><img src="png/card-v2-full.png" alt=""></div>
+<div class="col"><h3>Вариант 3</h3><img src="png/card-v3-full.png" alt=""></div>
+</div>
+</section>
+
+<section>
+<h2>2. Результаты поиска (на примере Toyota)</h2>
+<div class="pat"><b>Что общего у больших площадок:</b>
+<ul>
+<li>Сверху — только фильтры, число найденных и переключатель «плитка / список»; первая машина видна на первом экране.</li>
+<li>Строка: фото слева, справа название, цена крупно, параметры одной-двумя строками, зелёная метка проверенной истории (у autoplius, auto24).</li>
+<li>Одинаковый размер и вес шрифта у всех карточек, ничего не обрезается и не налезает друг на друга.</li>
+<li>Вспомогательные блоки и реклама — между строками, после 3-й машины и ниже, не над списком.</li>
+</ul></div>
+<div class="lbl">Первый экран</div>
+<div class="row">
+<div class="col now"><h3>Как сейчас</h3><div class="one">Только плитки, переключателя нет; три крупных блока (подсказка про «В гараж», «Присматриваете авто?», «Снизили цену») стоят перед первой машиной; в плитках обрезается «Есть о…», пробег налезает на метку.</div><img src="png/now-list-first.png" alt=""></div>
+<div class="col"><h3>Вариант 1</h3><div class="one">Список строками как у autoplius, переключатель плитка / список в панели фильтров; «Присматриваете авто?» уменьшен вдвое и стоит после 3-й машины, подсказка про «В гараж» — после 6-й, «Снизили цену» — после 9-й.</div><img src="png/list-v1-first.png" alt=""></div>
+<div class="col"><h3>Вариант 2</h3><div class="one">Крупные карточки в одну колонку как у auto24: большое фото, название и цена в одной строке, параметры одной строкой; тот же переключатель; блоки после 3-й, 5-й и 7-й машины.</div><img src="png/list-v2-first.png" alt=""></div>
+<div class="col"><h3>Вариант 3</h3><div class="one">Остаются плитки в 2 колонки, но ровные: цена сверху, название, две строки параметров, ничего не обрезано; переключатель плитка / список (список — как в варианте 1); блоки после 3-го и 5-го ряда.</div><img src="png/list-v3-first.png" alt=""></div>
+</div>
+<div class="cap">Первые машины списка (снимок «как сейчас» — страница /ru/auto/marka/toyota)</div>
+<div class="row">
+<div class="col now"><h3>Как сейчас</h3><img src="png/now-list-full.png" alt=""></div>
+<div class="col"><h3>Вариант 1</h3><img src="png/list-v1-full.png" alt=""></div>
+<div class="col"><h3>Вариант 2</h3><img src="png/list-v2-full.png" alt=""></div>
+<div class="col"><h3>Вариант 3</h3><img src="png/list-v3-full.png" alt=""></div>
+</div>
+</section>
+<div class="top"><p style="font-size:13px">Блок «не нашли авто» понят как «Присматриваете авто? … Ничего не нашли? Откройте подбор →»: во всех вариантах он уменьшен примерно вдвое и стоит после 2–3-го ряда. В макетах везде единый вид цены (€3 200, как на карточке), «км» вместо «km», один набор размеров шрифта (20 / 16 / 14 / 12).</p></div>
+</body></html>
