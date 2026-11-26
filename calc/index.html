@@ -4,168 +4,206 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>AutoPase: считаем отчёты</title>
+<title>AutoPase: сколько приносят отчёты</title>
 <style>
-  :root { --ink:#101828; --mut:#5b6474; --red:#d92d20; --amb:#f79009; --grn:#12a150; --bg:#f4f1ea; --card:#fff; --line:#d0d5dd; }
+  :root { --ink:#0f172a; --mut:#64748b; --bg:#f4f1ea; --card:#fff; --line:#e6e1d6; --good:#15803d; --bad:#dc2626; --a:#2563eb; --b:#0d9488; --c:#ea580c; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
-  .wrap { max-width:1520px; margin:0 auto; padding:22px 18px 70px; }
-  h1 { font-size:34px; margin:0 0 4px; letter-spacing:-.5px; }
-  .sub { color:var(--mut); margin:0 0 16px; }
-  .presets { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
-  .presets button { border:2px solid var(--ink); background:#fff; color:var(--ink); border-radius:999px; padding:9px 16px; font:600 15px system-ui; cursor:pointer; }
-  .presets button.on { background:var(--ink); color:#fff; }
-  .card { background:var(--card); border-radius:16px; padding:18px 20px; box-shadow:0 1px 0 #0000000f,0 8px 24px #1018280d; }
-  .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:16px; }
-  h2 { font-size:21px; margin:0 0 12px; }
-  .inputs { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr)); gap:12px 18px; }
-  .f label { display:block; font-weight:650; font-size:14.5px; }
-  .f .line { display:flex; gap:8px; align-items:center; margin-top:4px; }
-  .f input[type=number] { width:98px; font:700 18px system-ui; padding:6px 8px; border:2px solid var(--line); border-radius:9px; color:var(--ink); background:#fff; }
-  .f input[type=range] { flex:1; accent-color:var(--ink); min-width:60px; }
-  .f small { display:block; color:var(--mut); font-size:12.5px; margin-top:3px; min-height:16px; }
-  .funnel { display:grid; gap:7px; margin:14px 0 4px; }
-  .row { display:grid; grid-template-columns:86px minmax(0,1fr); gap:10px; align-items:center; }
-  .num { font-size:25px; font-weight:800; text-align:right; letter-spacing:-.6px; white-space:nowrap; }
-  .step { min-width:0; } .lbl { font-weight:650; font-size:15px; line-height:1.25; margin-bottom:4px; }
-  .track { height:12px; background:#eaecf0; border-radius:6px; overflow:hidden; }
-  .bar { height:100%; border-radius:6px; transition:width .2s; }
-  .c1{background:#1e3a8a}.c2{background:#1d4ed8}.c3{background:#0e9384}.c4{background:var(--amb);color:#3b2500}.c5{background:#b54708}.c6{background:var(--red)}
-  .res { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:14px; }
-  .res > div { background:#f2f4f7; border-radius:12px; padding:10px 12px; position:relative; min-width:0; }
-  .res b { display:block; font-size:21px; white-space:nowrap; letter-spacing:-.6px; }
-  .res span { font-size:13px; color:var(--mut); }
-  .bad b { color:var(--red); } .good b { color:var(--grn); }
-  .be { margin-top:10px; font-weight:650; }
-  .foot { color:var(--mut); font-size:13px; margin-top:22px; }
-  @media (max-width:1180px){ .grid{grid-template-columns:minmax(0,1fr)} }
-  @media (max-width:860px){ h1{font-size:26px} .res{grid-template-columns:1fr} }
-  .f, .card { position:relative; }
-  .lh { display:flex; align-items:flex-start; gap:6px; }
-  .tip { flex:none; display:inline-flex; align-items:center; justify-content:center; width:19px; height:19px; margin-top:1px; border-radius:50%; background:#e4e7ec; color:#344054; font:700 12.5px system-ui; cursor:help; vertical-align:2px; }
-  .tip:hover, .tip:focus { background:var(--ink); color:#fff; outline:none; }
-  .tip:hover::after, .tip:focus::after { content:attr(data-tip); position:absolute; left:0; right:0; bottom:calc(100% + 6px); background:var(--ink); color:#fff; font:500 13.5px/1.4 system-ui; padding:9px 12px; border-radius:10px; z-index:20; box-shadow:0 8px 24px #10182833; text-align:left; letter-spacing:0; }
-  h2 { position:relative; }
-  h2 .tip:hover::after, h2 .tip:focus::after { bottom:auto; top:calc(100% + 4px); font-size:13.5px; font-weight:500; }
-  .scen { position:sticky; top:0; z-index:30; background:var(--bg); padding:10px 0 10px; margin:0 0 6px; border-bottom:1px solid var(--line); }
-  .srow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px; }
-  .st { font-size:15px; }
-  .chips { display:flex; flex-wrap:wrap; gap:8px; }
-  .chip { display:inline-flex; align-items:center; border:2px solid var(--ink); background:#fff; border-radius:999px; overflow:hidden; }
-  .chip button { border:0; background:none; color:var(--ink); font:600 14.5px system-ui; padding:7px 14px; cursor:pointer; }
-  .chip .x { padding:7px 11px 7px 4px; font-size:17px; line-height:1; color:var(--mut); }
-  .chip .x:hover { color:var(--red); }
-  .chip.on { background:var(--ink); }
-  .chip.on button { color:#fff; }
-  #sname { flex:1 1 240px; min-width:0; max-width:380px; font:500 15px system-ui; padding:8px 12px; border:2px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
-  .act { border:2px solid var(--ink); background:var(--ink); color:#fff; border-radius:10px; padding:8px 14px; font:650 14.5px system-ui; cursor:pointer; }
-  .act.ghost { background:#fff; color:var(--ink); }
-  .msg { color:var(--grn); font-weight:650; font-size:14px; }
-  .scen small { color:var(--mut); font-size:12.5px; }
-  .res .tip:hover::after, .res .tip:focus::after { left:auto; right:0; width:240px; }
   html, body { overflow-x:hidden; }
-  @media (max-width:860px){ .scen{position:static} }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:1480px; margin:0 auto; padding:20px 18px 60px; }
+  h1 { font-size:30px; margin:0 0 2px; letter-spacing:-.5px; }
+  .sub { color:var(--mut); margin:0 0 12px; font-size:15px; }
+  .sub .chgdemo { display:inline-block; width:16px; height:12px; border:2px solid #f59e0b; background:#fffbeb; border-radius:4px; vertical-align:-1px; }
+
+  /* сценарии */
+  .scen { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:4px; }
+  .st { font-weight:700; font-size:15px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { display:inline-flex; align-items:center; border:2px solid var(--ink); background:#fff; border-radius:999px; overflow:hidden; }
+  .chip button { border:0; background:none; color:var(--ink); font:600 14px system-ui; padding:6px 13px; cursor:pointer; }
+  .chip .x { padding:6px 10px 6px 2px; font-size:17px; line-height:1; color:var(--mut); }
+  .chip .x:hover { color:var(--bad); }
+  .chip.on { background:var(--ink); } .chip.on button { color:#fff; }
+  #sname { flex:1 1 220px; min-width:0; max-width:340px; font:500 14.5px system-ui; padding:7px 11px; border:2px solid #d0d5dd; border-radius:10px; background:#fff; color:var(--ink); }
+  .act { border:2px solid var(--ink); background:var(--ink); color:#fff; border-radius:10px; padding:7px 13px; font:650 14px system-ui; cursor:pointer; }
+  .act.ghost { background:#fff; color:var(--ink); }
+  .msg { color:var(--good); font-weight:650; font-size:14px; }
+  .scen-note { color:var(--mut); font-size:12.5px; margin:2px 0 6px; }
+
+  /* итог сверху */
+  .board { position:sticky; top:0; z-index:40; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:10px 0 12px; background:var(--bg); }
+  .sc { position:relative; background:var(--card); border-radius:14px; padding:11px 16px 12px; border-top:6px solid var(--vc); box-shadow:0 1px 0 #0000000d,0 8px 22px #0f172a10; }
+  .a { --vc:var(--a); } .b { --vc:var(--b); } .c { --vc:var(--c); }
+  .sc-h { display:flex; gap:8px; align-items:center; font-weight:700; font-size:15px; padding-right:110px; }
+  .badge { flex:none; width:26px; height:26px; border-radius:8px; background:var(--vc); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; }
+  .sc-big { font-size:36px; font-weight:800; letter-spacing:-1px; line-height:1.1; margin-top:6px; }
+  .sc-big small { font-size:15px; font-weight:600; color:var(--mut); letter-spacing:0; }
+  .good { color:var(--good); } .bad { color:var(--bad); }
+  .sc-sub { font-size:13.5px; color:var(--mut); margin-top:2px; }
+  .sc-v { font-size:14px; font-weight:650; margin-top:5px; }
+  .best-tag { position:absolute; top:11px; right:12px; background:#fef3c7; color:#92400e; font-size:12.5px; font-weight:750; border-radius:999px; padding:3px 10px; display:none; }
+  .sc.best .best-tag { display:block; }
+
+  /* карточки */
+  .card { position:relative; background:var(--card); border-radius:16px; padding:16px 18px; box-shadow:0 1px 0 #0000000d,0 8px 22px #0f172a0d; }
+  .gen { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px 22px; margin-bottom:14px; }
+  .gen h2 { grid-column:1/-1; margin:0; }
+  h2 { position:relative; font-size:18px; margin:0 0 10px; display:flex; gap:8px; align-items:flex-start; line-height:1.3; }
+  .cols { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+  .col { border-top:6px solid var(--vc); }
+  .cap { font-size:12px; font-weight:750; letter-spacing:.08em; text-transform:uppercase; color:var(--mut); margin:16px 0 8px; }
+
+  /* поле */
+  .gf, .mf, .conv { position:relative; }
+  .gf label { display:block; font-weight:650; font-size:14.5px; margin-bottom:5px; }
+  .inrow { display:flex; align-items:center; gap:6px; }
+  .unit { font-weight:700; color:var(--mut); }
+  input[type=number] { width:88px; font:700 17px system-ui; padding:5px 8px; border:2px solid #d0d5dd; border-radius:9px; background:#fff; color:var(--ink); }
+  input[type=number]:focus { outline:none; border-color:var(--ink); }
+  input.chg { border-color:#f59e0b; background:#fffbeb; }
+  .note { font-size:12.5px; color:var(--mut); }
+  .gf .note { margin-top:4px; display:block; }
+
+  /* воронка */
+  .cnt { display:grid; grid-template-columns:78px minmax(0,1fr); gap:12px; align-items:end; }
+  .cnt b { font-size:26px; font-weight:800; text-align:right; letter-spacing:-.6px; line-height:1.1; white-space:nowrap; }
+  .cnt .lbl { font-weight:650; font-size:15px; }
+  .track { height:10px; background:#eef0f3; border-radius:5px; overflow:hidden; margin-top:4px; }
+  .track i { display:block; height:100%; background:var(--vc); border-radius:5px; transition:width .2s; }
+  .conv { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; margin:7px 0 7px 90px; padding:7px 10px; background:#f8f7f3; border-left:3px solid var(--vc); border-radius:0 10px 10px 0; font-size:14.5px; }
+  .conv input[type=number] { width:74px; font-size:16px; padding:4px 7px; }
+  .conv .arr { color:var(--vc); font-weight:800; }
+  .conv .note { flex-basis:100%; }
+
+  /* деньги */
+  .mf { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--line); }
+  .mf:first-of-type { border-top:0; }
+  .mf label { font-weight:650; font-size:14.5px; display:block; }
+  .ct .tip, .mf label .tip, .gf label .tip { display:inline-flex; vertical-align:-4px; margin-left:2px; }
+  .mf .note { grid-column:1/-1; }
+
+  /* итог в колонке */
+  .eq { background:#f8f7f3; border-radius:12px; padding:10px 14px; }
+  .eq div { display:flex; justify-content:space-between; gap:10px; padding:3px 0; font-size:15px; }
+  .eq div b { white-space:nowrap; }
+  .eq .tot { border-top:2px solid var(--ink); margin-top:4px; padding-top:7px; font-size:18px; font-weight:800; }
+  .why { font-size:13.5px; color:var(--mut); margin:8px 0 0; }
+
+  /* подсказки «?» */
+  .tip { flex:none; display:inline-flex; align-items:center; justify-content:center; width:19px; height:19px; margin-top:1px; border-radius:50%; background:#e4e7ec; color:#344054; font:700 12.5px system-ui; cursor:help; }
+  .tip:hover, .tip:focus { background:var(--ink); color:#fff; outline:none; }
+  .tip:hover::after, .tip:focus::after { content:attr(data-tip); position:absolute; left:0; right:0; bottom:calc(100% + 6px); background:var(--ink); color:#fff; font:500 13.5px/1.4 system-ui; padding:9px 12px; border-radius:10px; z-index:50; box-shadow:0 8px 24px #10182833; text-align:left; letter-spacing:0; text-transform:none; }
+  h2 .tip:hover::after, h2 .tip:focus::after { bottom:auto; top:calc(100% + 4px); }
+
+  .foot { color:var(--mut); font-size:13px; margin-top:22px; }
+
+  @media (max-width:1100px) { .cols, .gen { grid-template-columns:minmax(0,1fr); } }
+  @media (max-width:900px) { .board { position:static; } }
+  @media (max-width:640px) {
+    .board { grid-template-columns:minmax(0,1fr); }
+    .sc-big { font-size:30px; }
+    .conv { margin-left:0; }
+    h1 { font-size:25px; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Сколько приносят отчёты</h1>
-  <p class="sub">Три способа зарабатывать на отчётах. Двигайте числа — воронка и деньги пересчитаются. Воронка за один день, деньги за 30 дней. Адрес страницы запоминает ваши числа. Наведите на «?» или нажмите его — появится подсказка.</p>
+  <p class="sub">Три способа зарабатывать на отчётах. Меняйте числа — итог сверху пересчитается сразу. Воронка за один день, деньги за месяц. <span class="chgdemo"></span> — число изменено против наших цифр. «?» — подсказка.</p>
+
   <div class="scen">
-    <div class="srow"><b class="st">Сценарии:</b><div class="chips" id="chips"></div></div>
-    <div class="srow">
-      <input id="sname" maxlength="40" placeholder="Название, например «Партнёр, 10 % нажимают»" aria-label="Название сценария">
-      <button type="button" id="save" class="act">Сохранить текущие цифры</button>
-      <button type="button" id="share" class="act ghost">Скопировать ссылку</button>
-      <span id="msg" class="msg"></span>
-    </div>
-    <small>Сценарии хранятся в этом браузере. Чтобы показать другому человеку, отправьте ему ссылку: в ней все числа.</small>
+    <span class="st">Сценарии:</span>
+    <div class="chips" id="chips"></div>
+    <input id="sname" maxlength="40" placeholder="Название нового сценария" aria-label="Название сценария" autocomplete="off" data-lpignore="true" data-1p-ignore>
+    <button type="button" id="save" class="act">Сохранить</button>
+    <button type="button" id="share" class="act ghost">Скопировать ссылку</button>
+    <span id="msg" class="msg"></span>
   </div>
+  <div class="scen-note">Сценарии хранятся в этом браузере. Чтобы показать другому человеку, отправьте ему ссылку: в ней все числа.</div>
 
-  <div class="card"><h2>Общее для всех трёх вариантов <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Трафик и расходы на сайт. Одинаковы для А, Б и В.">?</span></h2><div class="inputs" id="in-s"></div></div>
+  <div class="board" id="board"></div>
 
-  <div class="grid">
-    <div class="card">
-      <h2>А. Как сейчас: первый отчёт бесплатно, следующие платные <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Человек заказывает первый отчёт бесплатно. Второй и следующие продаём сами, вся цена наша.">?</span></h2>
-      <div class="inputs" id="in-a"></div>
-      <div class="funnel" id="fa"></div>
-      <div class="res" id="ra"></div><div class="be" id="ba"></div>
-    </div>
-    <div class="card">
-      <h2>Б. Все отчёты бесплатно, глубокий отчёт продаём сами <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Все наши отчёты отдаём бесплатно. В отчёте предлагаем купить глубокий отчёт, который делаем сами. Деньги от продажи наши, минус стоимость его производства.">?</span></h2>
-      <div class="inputs" id="in-b"></div>
-      <div class="funnel" id="fb"></div>
-      <div class="res" id="rb"></div><div class="be" id="bb"></div>
-    </div>
-    <div class="card">
-      <h2>В. Все отчёты бесплатно, глубокий отчёт продаёт партнёр <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Все наши отчёты отдаём бесплатно. В отчёте ставим ссылку на отчёт партнёра, например carVertical. Отчёт продаёт партнёр, нам комиссия с каждой продажи.">?</span></h2>
-      <div class="inputs" id="in-c"></div>
-      <div class="funnel" id="fc"></div>
-      <div class="res" id="rc"></div><div class="be" id="bc"></div>
-    </div>
-  </div>
+  <div class="card gen" id="gen"></div>
+
+  <div class="cols" id="cols"></div>
+
   <p class="foot">«Факт» — база и почтовая служба AutoPase за 19–25.11.2026. «Оценка» — предположение, меняйте. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Страница закрыта от поисковиков.</p>
 </div>
 <script>
-// Поле: [ключ, название, по умолчанию, мин, макс, шаг, откуда цифра, подсказка]
-var F = {
-  s: [
-    ['people', 'Посетителей сайта в день', 1000, 0, 20000, 100, 'факт: около 1 000',
-      'Сколько разных людей заходит на сайт за день. Расходы растут вместе с этим числом.'],
-    ['cost', 'Расходы в месяц сейчас, при 1 000 посетителях в день, €', 500, 0, 5000, 50, 'сейчас 500 €',
-      'Всё, что мы тратим на сайт за месяц при нынешних 1 000 посетителях в день.'],
-    ['step', 'Плюс расходов на каждую следующую 1 000 посетителей в день, €', 200, 0, 2000, 10, 'ваша оценка: 200 €',
-      'На сколько вырастают расходы в месяц, когда посетителей в день становится на 1 000 больше. 2 000 посетителей — 500 + 200 = 700 € в месяц.']
-  ],
-  a: [
-    ['email', 'Заказывают бесплатный отчёт, % посетителей', 2.9, 0, 30, 0.1, 'факт: 2,9 %',
-      'Сколько посетителей из 100 оставляют почту и заказывают первый отчёт. Первый отчёт бесплатный.'],
-    ['got', 'Получают отчёт, % заказавших', 43, 0, 100, 1, 'факт: 43 %',
-      'Не по каждой машине мы находим данные. Остальным уходит письмо «не нашли». Чаще всего это заказы по VIN и номеру.'],
-    ['see', 'Видят цену второго отчёта, % получивших', 5, 0, 100, 1, 'факт: 1 человек за 24–25.11',
-      'Сколько получивших бесплатный отчёт заказывают второй и видят окно оплаты.'],
-    ['pay', 'Платят, % увидевших цену', 30, 0, 100, 1, 'оценка: тот один заплатил',
-      'Сколько из увидевших окно оплаты заплатили.'],
-    ['price', 'Цена нашего платного отчёта, €', 2.9, 0, 30, 0.1, 'было 2,90 €, с 23.11 — 3,90 €',
-      'Сколько человек платит за второй и следующие отчёты. Вся цена наша.'],
-    ['cprA', 'Стоимость производства одного отчёта, €', 0, 0, 5, 0.05, 'не знаю — впишите своё',
-      'Сколько нам стоит сделать один отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт: и бесплатный, и платный.']
-  ],
-  b: [
-    ['emailB', 'Заказывают бесплатный отчёт, % посетителей', 2.9, 0, 30, 0.1, 'факт сейчас: 2,9 %',
-      'Сколько посетителей из 100 заказывают отчёт. Здесь все наши отчёты бесплатные, и считаем, что получают их все.'],
-    ['open', 'Открывают письмо с отчётом, % получивших', 72, 0, 100, 1, 'факт: 72 %',
-      'Сколько получивших открывают письмо «Отчёт готов».'],
-    ['click', 'Нажимают «купить глубокий отчёт», % открывших', 5, 0, 100, 1, 'оценка. Из письма на сайт сейчас идут 14 %',
-      'В бесплатном отчёте предлагаем купить подробный. Сколько открывших на это нажимают.'],
-    ['buy', 'Покупают, % нажавших', 6, 0, 100, 1, 'оценка: 5–8 %',
-      'Сколько нажавших доходят до оплаты и платят.'],
-    ['priceB', 'Цена нашего глубокого отчёта, €', 7.9, 0, 40, 0.1, 'Женя называл 7,90 €',
-      'Глубокий отчёт делаем и продаём сами, вся цена наша.'],
-    ['cprB', 'Стоимость производства одного бесплатного отчёта, €', 0, 0, 5, 0.05, 'не знаю — впишите своё',
-      'Сколько нам стоит сделать один бесплатный отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт.'],
-    ['costDeep', 'Стоимость производства одного глубокого отчёта, €', 0, 0, 20, 0.1, 'не знаю — впишите своё',
-      'Сколько нам стоит сделать один глубокий отчёт: купить данные, ИИ, работа людей. Вычитается из каждой продажи.']
-  ],
-  c: [
-    ['emailC', 'Заказывают бесплатный отчёт, % посетителей', 2.9, 0, 30, 0.1, 'факт сейчас: 2,9 %',
-      'Сколько посетителей из 100 заказывают отчёт. Здесь все наши отчёты бесплатные, и считаем, что получают их все.'],
-    ['openC', 'Открывают письмо с отчётом, % получивших', 72, 0, 100, 1, 'факт: 72 %',
-      'Сколько получивших открывают письмо «Отчёт готов».'],
-    ['clickC', 'Нажимают на отчёт партнёра, % открывших', 5, 0, 100, 1, 'оценка. Из письма на сайт сейчас идут 14 %',
-      'В бесплатном отчёте ставим ссылку на отчёт партнёра. Сколько открывших по ней переходят.'],
-    ['buyC', 'Покупают у партнёра, % перешедших', 6, 0, 100, 1, 'оценка: 5–8 %',
-      'Сколько перешедших покупают отчёт на сайте партнёра.'],
-    ['comm', 'Наша комиссия с одной продажи, €', 4, 0, 20, 0.1, 'факт: carVertical платил 4 €',
-      'Сколько партнёр платит нам за каждую продажу по нашей ссылке. Его отчёт делает он сам, нам это ничего не стоит.'],
-    ['cprC', 'Стоимость производства одного бесплатного отчёта, €', 0, 0, 5, 0.05, 'не знаю — впишите своё',
-      'Сколько нам стоит сделать один бесплатный отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт.']
-  ]
+// Каждое число: l — название, d — наше значение, s — шаг, u — единица, n — откуда цифра, t — подсказка
+var M = {
+  people: { l: 'Посетителей сайта в день', d: 1000, s: 100, u: '', n: 'факт: около 1 000',
+    t: 'Сколько разных людей заходит на сайт за день. Расходы растут вместе с этим числом.' },
+  cost: { l: 'Расходы в месяц сейчас, при 1 000 посетителях в день', d: 500, s: 50, u: '€', n: 'сейчас 500 €',
+    t: 'Всё, что мы тратим на сайт за месяц при нынешних 1 000 посетителях в день.' },
+  step: { l: 'Плюс расходов на каждую следующую 1 000 посетителей в день', d: 200, s: 10, u: '€', n: 'ваша оценка: 200 €',
+    t: 'На сколько вырастают расходы в месяц, когда посетителей в день становится на 1 000 больше. 2 000 посетителей — 500 + 200 = 700 € в месяц.' },
+
+  email: { l: 'заказывают бесплатный отчёт', d: 2.9, s: 0.1, u: '%', n: 'факт: 2,9 % посетителей',
+    t: 'Сколько посетителей из 100 оставляют почту и заказывают первый отчёт. Первый отчёт бесплатный.' },
+  got: { l: 'получают его', d: 43, s: 1, u: '%', n: 'факт: 43 % заказавших',
+    t: 'Не по каждой машине мы находим данные. Остальным уходит письмо «не нашли». Чаще всего это заказы по VIN и номеру.' },
+  see: { l: 'видят цену второго отчёта', d: 5, s: 1, u: '%', n: 'факт: 1 человек за 24–25.11',
+    t: 'Сколько получивших бесплатный отчёт заказывают второй и видят окно оплаты.' },
+  pay: { l: 'платят', d: 30, s: 1, u: '%', n: 'оценка: тот один заплатил',
+    t: 'Сколько из увидевших окно оплаты заплатили.' },
+  price: { l: 'Цена нашего платного отчёта', d: 2.9, s: 0.1, u: '€', n: 'было 2,90 €, с 23.11 — 3,90 €',
+    t: 'Сколько человек платит за второй и следующие отчёты. Вся цена наша.' },
+  cprA: { l: 'Производство одного отчёта', d: 0, s: 0.05, u: '€', n: 'не знаю — впишите своё',
+    t: 'Сколько нам стоит сделать один отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт: и бесплатный, и платный.' },
+
+  emailB: { l: 'заказывают и получают бесплатный отчёт', d: 2.9, s: 0.1, u: '%', n: 'факт сейчас: 2,9 % посетителей',
+    t: 'Сколько посетителей из 100 заказывают отчёт. Здесь все наши отчёты бесплатные, и считаем, что получают их все.' },
+  open: { l: 'открывают письмо с отчётом', d: 72, s: 1, u: '%', n: 'факт: 72 %',
+    t: 'Сколько получивших открывают письмо «Отчёт готов».' },
+  click: { l: 'нажимают «купить глубокий отчёт»', d: 5, s: 1, u: '%', n: 'оценка. Из письма на сайт сейчас идут 14 %',
+    t: 'В бесплатном отчёте предлагаем купить подробный. Сколько открывших на это нажимают.' },
+  buy: { l: 'покупают', d: 6, s: 1, u: '%', n: 'оценка: 5–8 %',
+    t: 'Сколько нажавших доходят до оплаты и платят.' },
+  priceB: { l: 'Цена нашего глубокого отчёта', d: 7.9, s: 0.1, u: '€', n: 'Женя называл 7,90 €',
+    t: 'Глубокий отчёт делаем и продаём сами, вся цена наша.' },
+  cprB: { l: 'Производство одного бесплатного отчёта', d: 0, s: 0.05, u: '€', n: 'не знаю — впишите своё',
+    t: 'Сколько нам стоит сделать один бесплатный отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт.' },
+  costDeep: { l: 'Производство одного глубокого отчёта', d: 0, s: 0.1, u: '€', n: 'не знаю — впишите своё',
+    t: 'Сколько нам стоит сделать один глубокий отчёт: купить данные, ИИ, работа людей. Вычитается из каждой продажи.' },
+
+  emailC: { l: 'заказывают и получают бесплатный отчёт', d: 2.9, s: 0.1, u: '%', n: 'факт сейчас: 2,9 % посетителей',
+    t: 'Сколько посетителей из 100 заказывают отчёт. Здесь все наши отчёты бесплатные, и считаем, что получают их все.' },
+  openC: { l: 'открывают письмо с отчётом', d: 72, s: 1, u: '%', n: 'факт: 72 %',
+    t: 'Сколько получивших открывают письмо «Отчёт готов».' },
+  clickC: { l: 'переходят по ссылке к партнёру', d: 5, s: 1, u: '%', n: 'оценка. Из письма на сайт сейчас идут 14 %',
+    t: 'В бесплатном отчёте ставим ссылку на отчёт партнёра. Сколько открывших по ней переходят.' },
+  buyC: { l: 'покупают у партнёра', d: 6, s: 1, u: '%', n: 'оценка: 5–8 %',
+    t: 'Сколько перешедших покупают отчёт на сайте партнёра.' },
+  comm: { l: 'Наша комиссия с одной продажи', d: 4, s: 0.1, u: '€', n: 'факт: carVertical платил 4 €',
+    t: 'Сколько партнёр платит нам за каждую продажу по нашей ссылке. Его отчёт делает он сам, нам это ничего не стоит.' },
+  cprC: { l: 'Производство одного бесплатного отчёта', d: 0, s: 0.05, u: '€', n: 'не знаю — впишите своё',
+    t: 'Сколько нам стоит сделать один бесплатный отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт.' }
 };
-var GROUPS = ['s', 'a', 'b', 'c'];
-var BASE = 1000; // при таком трафике расходы равны полю «Расходы в месяц»
+var GEN = ['people', 'cost', 'step'];
+// c — люди на каждом шаге воронки: c[0] пришли, c[1] после первого процента и т. д.
+var V = [
+  { id: 'a', L: 'А', name: 'Как сейчас', title: 'Как сейчас: первый отчёт бесплатно, следующие платные',
+    tip: 'Человек заказывает первый отчёт бесплатно. Второй и следующие продаём сами, вся цена наша.',
+    steps: [['email', 'заказали отчёт'], ['got', 'получили отчёт'], ['see', 'увидели цену второго'], ['pay', 'заплатили']],
+    money: ['price', 'cprA'],
+    calc: function (c) { return { rev: c[4] * v.price, out: (c[2] + c[4]) * v.cprA }; } },
+  { id: 'b', L: 'Б', name: 'Свой глубокий отчёт', title: 'Все отчёты бесплатно, глубокий отчёт продаём сами',
+    tip: 'Все наши отчёты отдаём бесплатно. В отчёте предлагаем купить глубокий отчёт, который делаем сами. Деньги от продажи наши, минус стоимость его производства.',
+    steps: [['emailB', 'получили бесплатный отчёт'], ['open', 'открыли письмо'], ['click', 'нажали «купить»'], ['buy', 'купили глубокий отчёт']],
+    money: ['priceB', 'costDeep', 'cprB'],
+    calc: function (c) { return { rev: c[4] * v.priceB, out: c[1] * v.cprB + c[4] * v.costDeep }; } },
+  { id: 'c', L: 'В', name: 'Глубокий отчёт партнёра', title: 'Все отчёты бесплатно, глубокий отчёт продаёт партнёр',
+    tip: 'Все наши отчёты отдаём бесплатно. В отчёте ставим ссылку на отчёт партнёра, например carVertical. Отчёт продаёт партнёр, нам комиссия с каждой продажи.',
+    steps: [['emailC', 'получили бесплатный отчёт'], ['openC', 'открыли письмо'], ['clickC', 'перешли к партнёру'], ['buyC', 'купили у партнёра']],
+    money: ['comm', 'cprC'],
+    calc: function (c) { return { rev: c[4] * v.comm, out: c[1] * v.cprC }; } }
+];
+var BASE = 1000; // при таком трафике расходы равны полю «Расходы в месяц сейчас»
 var v = {}, def = {};
-GROUPS.forEach(function (g) { F[g].forEach(function (f) { def[f[0]] = f[2]; v[f[0]] = f[2]; }); });
+Object.keys(M).forEach(function (k) { def[k] = M[k].d; v[k] = M[k].d; });
+
 // Числа сценария живут в строке вида «people=3000&cost=500» — и в адресе страницы, и в сохранённых сценариях
 function applyHash(str) {
   Object.keys(def).forEach(function (n) { v[n] = def[n]; });
@@ -179,18 +217,121 @@ function curHash() {
 }
 applyHash(location.hash);
 
+function fmt(x, d) {
+  return x.toLocaleString('ru-RU', { maximumFractionDigits: d === undefined ? (x < 10 ? 1 : 0) : d, minimumFractionDigits: 0 });
+}
+function eur(x) { return fmt(Math.round(x), 0) + ' €'; }
+function signed(x) { return (x >= 0 ? '+' : '−') + eur(Math.abs(x)); }
+function tip(t) { return '<span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="' + t + '">?</span>'; }
+function inp(k) {
+  var m = M[k];
+  return '<span class="inrow"><input type="number" id="in_' + k + '" min="0"' + (m.u === '%' ? ' max="100"' : '') + ' step="' + m.s + '" aria-label="' + m.l +
+    '" autocomplete="off" data-lpignore="true" data-1p-ignore>' + (m.u ? '<span class="unit">' + m.u + '</span>' : '') + '</span>';
+}
+function el(id) { return document.getElementById(id); }
+
+function build() {
+  el('gen').innerHTML = '<h2>Общее для всех трёх вариантов ' + tip('Трафик и расходы на сайт. Одинаковы для А, Б и В.') + '</h2>' +
+    GEN.map(function (k) {
+      return '<div class="gf"><label for="in_' + k + '">' + M[k].l + ', ' + (M[k].u || 'человек') + ' ' + tip(M[k].t) + '</label>' + inp(k) + '<span class="note">' + M[k].n + '</span></div>';
+    }).join('');
+
+  el('board').innerHTML = V.map(function (x) {
+    return '<div class="sc ' + x.id + '" id="sc_' + x.id + '"><span class="best-tag">★ больше всех</span>' +
+      '<div class="sc-h"><span class="badge">' + x.L + '</span>' + x.name + '</div>' +
+      '<div class="sc-big" id="big_' + x.id + '"></div><div class="sc-sub" id="sub_' + x.id + '"></div><div class="sc-v" id="ver_' + x.id + '"></div></div>';
+  }).join('');
+
+  el('cols').innerHTML = V.map(function (x) {
+    var f = '<div class="cnt"><b id="n_' + x.id + '_0"></b><div><div class="lbl">пришли на сайт</div><div class="track"><i id="t_' + x.id + '_0"></i></div></div></div>';
+    x.steps.forEach(function (s, i) {
+      var m = M[s[0]];
+      f += '<div class="conv"><span class="arr">↓</span>' + inp(s[0]) + '<span class="ct">' + m.l + ' ' + tip(m.t) + '</span><span class="note">' + m.n + '</span></div>' +
+        '<div class="cnt"><b id="n_' + x.id + '_' + (i + 1) + '"></b><div><div class="lbl">' + s[1] + '</div><div class="track"><i id="t_' + x.id + '_' + (i + 1) + '"></i></div></div></div>';
+    });
+    var money = x.money.map(function (k) {
+      return '<div class="mf"><label for="in_' + k + '">' + M[k].l + ' ' + tip(M[k].t) + '</label>' + inp(k) + '<span class="note">' + M[k].n + '</span></div>';
+    }).join('');
+    return '<div class="card col ' + x.id + '"><h2><span class="badge">' + x.L + '</span><span>' + x.title + '</span>' + tip(x.tip) + '</h2>' +
+      '<div class="cap">Воронка за день</div>' + f +
+      '<div class="cap">Деньги</div>' + money +
+      '<div class="cap">Итог за месяц</div><div class="eq" id="eq_' + x.id + '"></div><p class="why" id="why_' + x.id + '"></p></div>';
+  }).join('');
+
+  Object.keys(M).forEach(function (k) {
+    el('in_' + k).addEventListener('input', function (e) {
+      var x = parseFloat(String(e.target.value).replace(',', '.'));
+      v[k] = isNaN(x) ? 0 : Math.max(0, x);
+      update(true);
+    });
+  });
+  initScenarios();
+}
+
+function verdict(x, r) {
+  // m — что каждая 1 000 посетителей в день оставляет нам за месяц, после производства отчётов
+  var m = v.people ? (r.rev - r.out) * 30 * BASE / v.people : 0, fixed = v.cost - v.step;
+  if (r.profit >= 0) return { s: '✅ в плюсе', l: 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов.' };
+  if (m > v.step) {
+    var need = Math.ceil(BASE * fixed / (m - v.step));
+    return { s: '➡️ в ноль при ' + fmt(need, 0) + ' посетителях в день',
+      l: 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов. Выйдем в ноль при ' + fmt(need, 0) + ' посетителях в день (сейчас ' + fmt(v.people, 0) + ').' };
+  }
+  return { s: '❌ не окупается при любом трафике',
+    l: 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов. Больше людей не спасёт.' +
+      (m > 0 ? ' Нужно, чтобы каждый посетитель приносил в ' + fmt(v.step / m, 1) + ' раза больше.' : '') };
+}
+
+function update(fromInput) {
+  Object.keys(M).forEach(function (k) {
+    var e = el('in_' + k);
+    if (!fromInput || document.activeElement !== e) e.value = v[k];
+    e.classList.toggle('chg', v[k] !== def[k]);
+  });
+  var costsMonth = Math.max(0, v.cost + v.step * (v.people - BASE) / BASE);
+  var top = Math.log10(1 + v.people * 9) || 1, res = [];
+  V.forEach(function (x) {
+    var c = [v.people];
+    x.steps.forEach(function (s) { c.push(c[c.length - 1] * v[s[0]] / 100); });
+    c.forEach(function (n, i) {
+      el('n_' + x.id + '_' + i).textContent = fmt(n);
+      el('t_' + x.id + '_' + i).style.width = Math.max(1.5, Math.min(100, 100 * Math.log10(1 + n * 9) / top)).toFixed(1) + '%';
+    });
+    var r = x.calc(c);
+    r.profit = r.rev * 30 - costsMonth - r.out * 30;
+    var w = verdict(x, r);
+    res.push(r.profit);
+    var cls = r.profit >= 0 ? 'good' : 'bad';
+    el('big_' + x.id).className = 'sc-big ' + cls;
+    el('big_' + x.id).innerHTML = signed(r.profit) + ' <small>в месяц</small>';
+    el('sub_' + x.id).textContent = 'выручка ' + eur(r.rev * 30) + ' · расходы ' + eur(costsMonth + r.out * 30);
+    el('ver_' + x.id).textContent = w.s;
+    el('eq_' + x.id).innerHTML =
+      '<div><span>Выручка</span><b>' + eur(r.rev * 30) + '</b></div>' +
+      '<div><span>Расходы на сайт</span><b>− ' + eur(costsMonth) + '</b></div>' +
+      '<div><span>Производство отчётов</span><b>− ' + eur(r.out * 30) + '</b></div>' +
+      '<div class="tot"><span>Прибыль</span><b class="' + cls + '">' + signed(r.profit) + '</b></div>';
+    el('why_' + x.id).textContent = w.l;
+  });
+  var best = res.indexOf(Math.max.apply(null, res));
+  V.forEach(function (x, i) { el('sc_' + x.id).classList.toggle('best', i === best && res.some(function (p) { return p !== res[best]; })); });
+  var hash = curHash();
+  history.replaceState(null, '', hash ? '#' + hash : location.pathname);
+  drawChips();
+}
+
 // Сохранённые сценарии — в памяти этого браузера
 var KEY = 'autopase-calc-scenarios';
 function loadSc() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
 function saveSc(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
 function say(t) {
-  var m = document.getElementById('msg');
+  var m = el('msg');
   m.textContent = t;
   clearTimeout(say.t);
   say.t = setTimeout(function () { m.textContent = ''; }, 2500);
 }
 function drawChips() {
-  var box = document.getElementById('chips'), h = curHash();
+  var box = el('chips'), h = curHash();
   box.innerHTML = '';
   var all = [{ name: 'Наши цифры', vals: '', fixed: true }].concat(loadSc());
   all.forEach(function (s, i) {
@@ -200,7 +341,7 @@ function drawChips() {
     b.type = 'button';
     b.textContent = s.name;
     b.title = 'Открыть сценарий';
-    b.addEventListener('click', function () { applyHash(s.vals); sync(); });
+    b.addEventListener('click', function () { applyHash(s.vals); update(); });
     chip.appendChild(b);
     if (!s.fixed) {
       var x = document.createElement('button');
@@ -222,109 +363,29 @@ function drawChips() {
   });
 }
 function initScenarios() {
-  var inp = document.getElementById('sname');
+  var box = el('sname');
   function save() {
     var list = loadSc();
-    var name = inp.value.trim() || ('Сценарий ' + (list.length + 1));
+    var name = box.value.trim() || ('Сценарий ' + (list.length + 1));
     var vals = curHash();
     var at = list.findIndex(function (s) { return s.name === name; });
     if (at >= 0) list[at].vals = vals; else list.push({ name: name, vals: vals });
     saveSc(list);
-    inp.value = '';
+    box.value = '';
     drawChips();
     say('Сохранён: ' + name);
   }
-  document.getElementById('save').addEventListener('click', save);
-  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') save(); });
-  document.getElementById('share').addEventListener('click', function () {
+  el('save').addEventListener('click', save);
+  box.addEventListener('keydown', function (e) { if (e.key === 'Enter') save(); });
+  el('share').addEventListener('click', function () {
     var url = location.href;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url).then(function () { say('Ссылка скопирована — в ней все числа'); }, function () { say(url); });
     } else say(url);
   });
 }
-
-function fmt(x, d) {
-  return x.toLocaleString('ru-RU', { maximumFractionDigits: d === undefined ? (x < 10 ? 1 : 0) : d, minimumFractionDigits: 0 });
-}
-function eur(x) { return fmt(Math.round(x), 0) + ' €'; }
-function tip(t) { return '<span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="' + t + '">?</span>'; }
-
-function build() {
-  GROUPS.forEach(function (g) {
-    document.getElementById('in-' + g).innerHTML = F[g].map(function (f) {
-      return '<div class="f"><div class="lh"><label for="n_' + f[0] + '">' + f[1] + '</label>' + tip(f[7]) + '</div><div class="line">' +
-        '<input type="number" id="n_' + f[0] + '" min="' + f[3] + '" step="' + f[5] + '">' +
-        '<input type="range" id="r_' + f[0] + '" min="' + f[3] + '" max="' + f[4] + '" step="' + f[5] + '" aria-label="' + f[1] + '">' +
-        '</div><small>' + f[6] + '</small></div>';
-    }).join('');
-    F[g].forEach(function (f) {
-      ['n_', 'r_'].forEach(function (p) {
-        document.getElementById(p + f[0]).addEventListener('input', function (e) {
-          var x = parseFloat(e.target.value);
-          v[f[0]] = isNaN(x) ? 0 : Math.max(0, x);
-          sync(e.target.id);
-        });
-      });
-    });
-  });
-  initScenarios();
-}
-function funnel(id, rows) {
-  var top = Math.log10(1 + rows[0][0] * 9) || 1;
-  document.getElementById(id).innerHTML = rows.map(function (r) {
-    var w = Math.max(0, Math.min(100, 100 * Math.log10(1 + r[0] * 9) / top));
-    return '<div class="row"><div class="num">' + fmt(r[0]) + '</div><div class="step"><div class="lbl">' + r[1] + '</div>' +
-      '<div class="track"><div class="bar c' + r[2] + '" style="width:' + Math.max(2, w).toFixed(1) + '%"></div></div></div></div>';
-  }).join('');
-}
-// revDay — выручка за день; outDay — производство отчётов за день
-function result(idR, idB, revDay, outDay) {
-  var month = revDay * 30;
-  var costsMonth = Math.max(0, v.cost + v.step * (v.people - BASE) / BASE);
-  var profit = month - costsMonth - outDay * 30;
-  document.getElementById(idR).innerHTML =
-    '<div><b>' + fmt(revDay, 2) + ' €</b><span>выручка в день</span></div>' +
-    '<div><b>' + eur(month) + '</b><span>выручка в месяц</span></div>' +
-    '<div class="' + (profit >= 0 ? 'good' : 'bad') + '"><b>' + (profit >= 0 ? '+' : '−') + eur(Math.abs(profit)) + '</b><span>прибыль в месяц ' + tip('Выручка за месяц минус расходы на сайт и производство отчётов.') + '</span></div>';
-  var txt = 'Расходы на сайт при ' + fmt(v.people, 0) + ' посетителях в день: ' + eur(costsMonth) + ' в месяц' +
-    (outDay > 0 ? ', производство отчётов: ' + eur(outDay * 30) + ' в месяц' : '') + '. ';
-  if (v.people) {
-    // m — что каждая 1 000 посетителей в день оставляет нам за месяц, после производства отчётов
-    var m = (revDay - outDay) * 30 * BASE / v.people, fixed = v.cost - v.step;
-    txt += 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов. ';
-    if (m > v.step) {
-      txt += fixed <= 0 ? 'Значит, в плюсе при любом трафике.'
-        : 'Чтобы выйти в ноль, нужно ' + fmt(Math.ceil(BASE * fixed / (m - v.step)), 0) + ' посетителей в день (сейчас ' + fmt(v.people, 0) + ').';
-    } else {
-      txt += 'Больше людей не спасёт: каждая новая 1 000 приносит меньше, чем стоит.' +
-        (m > 0 ? ' Чтобы окупалась, каждый посетитель должен приносить в ' + fmt(v.step / m, 1) + ' раза больше.' : '');
-    }
-  }
-  document.getElementById(idB).textContent = txt;
-}
-function sync(skipId) {
-  Object.keys(v).forEach(function (n) {
-    ['n_', 'r_'].forEach(function (p) {
-      var el = document.getElementById(p + n);
-      if (el && el.id !== skipId) el.value = v[n];
-    });
-  });
-  var ordA = v.people * v.email / 100, gotA = ordA * v.got / 100, saw = gotA * v.see / 100, paid = saw * v.pay / 100;
-  funnel('fa', [[v.people, '👥 пришли на сайт', 1], [ordA, '✉️ заказали отчёт (оставили почту)', 2], [gotA, '📄 получили отчёт', 3], [saw, '💶 увидели цену второго отчёта', 4], [paid, '✅ заплатили', 6]]);
-  result('ra', 'ba', paid * v.price, (gotA + paid) * v.cprA);
-  var gotB = v.people * v.emailB / 100, opened = gotB * v.open / 100, clicked = opened * v.click / 100, bought = clicked * v.buy / 100;
-  funnel('fb', [[v.people, '👥 пришли на сайт', 1], [gotB, '📄 заказали и получили бесплатный отчёт', 2], [opened, '👀 открыли письмо', 4], [clicked, '👉 нажали «купить глубокий отчёт»', 5], [bought, '✅ купили наш глубокий отчёт', 6]]);
-  result('rb', 'bb', bought * v.priceB, gotB * v.cprB + bought * v.costDeep);
-  var gotC = v.people * v.emailC / 100, openedC = gotC * v.openC / 100, clickedC = openedC * v.clickC / 100, boughtC = clickedC * v.buyC / 100;
-  funnel('fc', [[v.people, '👥 пришли на сайт', 1], [gotC, '📄 заказали и получили бесплатный отчёт', 2], [openedC, '👀 открыли письмо', 4], [clickedC, '👉 перешли к партнёру', 5], [boughtC, '✅ купили у партнёра', 6]]);
-  result('rc', 'bc', boughtC * v.comm, gotC * v.cprC);
-  var hash = curHash();
-  history.replaceState(null, '', hash ? '#' + hash : location.pathname);
-  drawChips();
-}
 build();
-sync();
+update();
 </script>
 </body>
 </html>
