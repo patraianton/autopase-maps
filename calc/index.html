@@ -38,74 +38,103 @@
   .foot { color:var(--mut); font-size:13px; margin-top:22px; }
   @media (max-width:1180px){ .grid{grid-template-columns:1fr} }
   @media (max-width:860px){ h1{font-size:26px} .res{grid-template-columns:1fr} }
+  .f, .card { position:relative; }
+  .lh { display:flex; align-items:flex-start; gap:6px; }
+  .tip { flex:none; display:inline-flex; align-items:center; justify-content:center; width:19px; height:19px; margin-top:1px; border-radius:50%; background:#e4e7ec; color:#344054; font:700 12.5px system-ui; cursor:help; vertical-align:2px; }
+  .tip:hover, .tip:focus { background:var(--ink); color:#fff; outline:none; }
+  .tip:hover::after, .tip:focus::after { content:attr(data-tip); position:absolute; left:0; right:0; bottom:calc(100% + 6px); background:var(--ink); color:#fff; font:500 13.5px/1.4 system-ui; padding:9px 12px; border-radius:10px; z-index:20; box-shadow:0 8px 24px #10182833; text-align:left; letter-spacing:0; }
+  h2 { position:relative; }
+  h2 .tip:hover::after, h2 .tip:focus::after { bottom:auto; top:calc(100% + 4px); font-size:13.5px; font-weight:500; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Считаем отчёты</h1>
-  <p class="sub">Двигайте числа — воронка и деньги пересчитаются. Воронка за один день, деньги за 30 дней. Адрес страницы запоминает ваши числа.</p>
-  <div class="presets" id="presets"></div>
+  <h1>Сколько приносят отчёты</h1>
+  <p class="sub">Три способа зарабатывать на отчётах. Двигайте числа — воронка и деньги пересчитаются. Воронка за один день, деньги за 30 дней. Адрес страницы запоминает ваши числа. Наведите на «?» или нажмите его — появится подсказка.</p>
+  <div class="presets"><button type="button" id="reset">Вернуть наши цифры</button></div>
 
-  <div class="card"><h2>Общее</h2><div class="inputs" id="in-s"></div></div>
+  <div class="card"><h2>Общее для всех трёх вариантов <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Трафик и расходы на сайт. Одинаковы для А, Б и В.">?</span></h2><div class="inputs" id="in-s"></div></div>
 
   <div class="grid">
     <div class="card">
-      <h2>А. Как сейчас: первый отчёт бесплатно, дальше свой платный</h2>
+      <h2>А. Как сейчас: первый отчёт бесплатно, следующие платные <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Человек заказывает первый отчёт бесплатно. Второй и следующие продаём сами, вся цена наша.">?</span></h2>
       <div class="inputs" id="in-a"></div>
       <div class="funnel" id="fa"></div>
       <div class="res" id="ra"></div><div class="be" id="ba"></div>
     </div>
     <div class="card">
-      <h2>Б. Все отчёты бесплатно, глубокий отчёт продаём сами</h2>
+      <h2>Б. Все отчёты бесплатно, глубокий отчёт продаём сами <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Все наши отчёты отдаём бесплатно. В отчёте предлагаем купить глубокий отчёт, который делаем сами. Деньги от продажи наши, минус стоимость его производства.">?</span></h2>
       <div class="inputs" id="in-b"></div>
       <div class="funnel" id="fb"></div>
       <div class="res" id="rb"></div><div class="be" id="bb"></div>
     </div>
     <div class="card">
-      <h2>В. Все отчёты бесплатно, глубокий отчёт продаёт партнёр, нам комиссия</h2>
+      <h2>В. Все отчёты бесплатно, глубокий отчёт продаёт партнёр <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Все наши отчёты отдаём бесплатно. В отчёте ставим ссылку на отчёт партнёра, например carVertical. Отчёт продаёт партнёр, нам комиссия с каждой продажи.">?</span></h2>
       <div class="inputs" id="in-c"></div>
       <div class="funnel" id="fc"></div>
       <div class="res" id="rc"></div><div class="be" id="bc"></div>
     </div>
   </div>
-  <p class="foot">Подписи «факт» — база и почтовая служба AutoPase за 19–25.11.2026. «Оценка» — предположение, меняйте. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Страница закрыта от поисковиков.</p>
+  <p class="foot">«Факт» — база и почтовая служба AutoPase за 19–25.11.2026. «Оценка» — предположение, меняйте. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Страница закрыта от поисковиков.</p>
 </div>
 <script>
+// Поле: [ключ, название, по умолчанию, мин, макс, шаг, откуда цифра, подсказка]
 var F = {
   s: [
-    ['people', 'Людей на сайте в день', 1000, 0, 20000, 100, 'факт: около 1 000'],
-    ['cost', 'Расходы в месяц при нынешних 1 000 людях в день, €', 600, 0, 5000, 50, 'сейчас 600 €. Растут вместе с трафиком: 2 000 людей в день — 1 200 €'],
-    ['cpr', 'Стоимость одного отчёта, €', 0, 0, 3, 0.05, 'ИИ и люди. Не знаю — впишите своё']
+    ['people', 'Посетителей сайта в день', 1000, 0, 20000, 100, 'факт: около 1 000',
+      'Сколько разных людей заходит на сайт за день. Расходы растут вместе с этим числом.'],
+    ['cost', 'Расходы в месяц при 1 000 посетителях в день, €', 600, 0, 5000, 50, 'сейчас 600 €',
+      'Всё, что мы тратим на сайт за месяц сейчас, при 1 000 посетителях в день. Растут вместе с трафиком: вдвое больше людей — вдвое больше расходов.']
   ],
   a: [
-    ['email', 'Заказывают отчёт, % пришедших', 2.9, 0, 30, 0.1, 'факт: 2,9 %. Первый отчёт уже бесплатный, приходит на почту'],
-    ['got', 'Получают отчёт, % заказавших', 43, 0, 100, 1, 'факт: 43 %. По VIN и номеру чаще «не нашли»'],
-    ['see', 'Доходят до окна оплаты, % получивших', 5, 0, 100, 1, 'факт: 1 раз за 24–25.11. Раньше не считалось'],
-    ['pay', 'Платят, % дошедших до окна', 30, 0, 100, 1, 'оценка: тот один заплатил'],
-    ['price', 'Цена своего отчёта, €', 2.9, 0, 30, 0.1, 'было 2,90, с 23.11 — 3,90']
+    ['email', 'Заказывают бесплатный отчёт, % посетителей', 2.9, 0, 30, 0.1, 'факт: 2,9 %',
+      'Сколько посетителей из 100 оставляют почту и заказывают первый отчёт. Первый отчёт бесплатный.'],
+    ['got', 'Получают отчёт, % заказавших', 43, 0, 100, 1, 'факт: 43 %',
+      'Не по каждой машине мы находим данные. Остальным уходит письмо «не нашли». Чаще всего это заказы по VIN и номеру.'],
+    ['see', 'Видят цену второго отчёта, % получивших', 5, 0, 100, 1, 'факт: 1 человек за 24–25.11',
+      'Сколько получивших бесплатный отчёт заказывают второй и видят окно оплаты.'],
+    ['pay', 'Платят, % увидевших цену', 30, 0, 100, 1, 'оценка: тот один заплатил',
+      'Сколько из увидевших окно оплаты заплатили.'],
+    ['price', 'Цена нашего платного отчёта, €', 2.9, 0, 30, 0.1, 'было 2,90 €, с 23.11 — 3,90 €',
+      'Сколько человек платит за второй и следующие отчёты. Вся цена наша.'],
+    ['cprA', 'Стоимость производства одного отчёта, €', 0, 0, 5, 0.05, 'не знаю — впишите своё',
+      'Сколько нам стоит сделать один отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт: и бесплатный, и платный.']
   ],
   b: [
-    ['emailB', 'Заказывают и получают бесплатный отчёт, % пришедших', 2.9, 0, 30, 0.1, 'факт сейчас: 2,9 % заказывают. Женя ждёт 1 000 заказов в день'],
-    ['open', 'Открывают отчёт, %', 72, 0, 100, 1, 'факт: письмо «Отчёт готов» открывают 72 %'],
-    ['click', 'Нажимают на глубокий отчёт, %', 5, 0, 100, 1, 'оценка. Рядом факт: из письма на сайт идут 14 %'],
-    ['buy', 'Покупают, % нажавших', 6, 0, 100, 1, 'оценка: 5–8 %'],
-    ['priceB', 'Цена нашего глубокого отчёта, €', 7.9, 0, 40, 0.1, 'вся цена наша. Женя называл 7,90 €']
+    ['emailB', 'Заказывают бесплатный отчёт, % посетителей', 2.9, 0, 30, 0.1, 'факт сейчас: 2,9 %',
+      'Сколько посетителей из 100 заказывают отчёт. Здесь все наши отчёты бесплатные, и считаем, что получают их все.'],
+    ['open', 'Открывают письмо с отчётом, % получивших', 72, 0, 100, 1, 'факт: 72 %',
+      'Сколько получивших открывают письмо «Отчёт готов».'],
+    ['click', 'Нажимают «купить глубокий отчёт», % открывших', 5, 0, 100, 1, 'оценка. Из письма на сайт сейчас идут 14 %',
+      'В бесплатном отчёте предлагаем купить подробный. Сколько открывших на это нажимают.'],
+    ['buy', 'Покупают, % нажавших', 6, 0, 100, 1, 'оценка: 5–8 %',
+      'Сколько нажавших доходят до оплаты и платят.'],
+    ['priceB', 'Цена нашего глубокого отчёта, €', 7.9, 0, 40, 0.1, 'Женя называл 7,90 €',
+      'Глубокий отчёт делаем и продаём сами, вся цена наша.'],
+    ['cprB', 'Стоимость производства одного бесплатного отчёта, €', 0, 0, 5, 0.05, 'не знаю — впишите своё',
+      'Сколько нам стоит сделать один бесплатный отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт.'],
+    ['costDeep', 'Стоимость производства одного глубокого отчёта, €', 0, 0, 20, 0.1, 'не знаю — впишите своё',
+      'Сколько нам стоит сделать один глубокий отчёт: купить данные, ИИ, работа людей. Вычитается из каждой продажи.']
   ],
   c: [
-    ['emailC', 'Заказывают и получают бесплатный отчёт, % пришедших', 2.9, 0, 30, 0.1, 'факт сейчас: 2,9 % заказывают. Женя ждёт 1 000 заказов в день'],
-    ['openC', 'Открывают отчёт, %', 72, 0, 100, 1, 'факт: письмо «Отчёт готов» открывают 72 %'],
-    ['clickC', 'Нажимают на отчёт партнёра, %', 5, 0, 100, 1, 'оценка. Рядом факт: из письма на сайт идут 14 %'],
-    ['buyC', 'Покупают у партнёра, % нажавших', 6, 0, 100, 1, 'оценка: 5–8 %'],
-    ['comm', 'Партнёр платит нам за одну продажу, €', 4, 0, 20, 0.1, 'факт: carVertical платил 4 € за продажу']
+    ['emailC', 'Заказывают бесплатный отчёт, % посетителей', 2.9, 0, 30, 0.1, 'факт сейчас: 2,9 %',
+      'Сколько посетителей из 100 заказывают отчёт. Здесь все наши отчёты бесплатные, и считаем, что получают их все.'],
+    ['openC', 'Открывают письмо с отчётом, % получивших', 72, 0, 100, 1, 'факт: 72 %',
+      'Сколько получивших открывают письмо «Отчёт готов».'],
+    ['clickC', 'Нажимают на отчёт партнёра, % открывших', 5, 0, 100, 1, 'оценка. Из письма на сайт сейчас идут 14 %',
+      'В бесплатном отчёте ставим ссылку на отчёт партнёра. Сколько открывших по ней переходят.'],
+    ['buyC', 'Покупают у партнёра, % перешедших', 6, 0, 100, 1, 'оценка: 5–8 %',
+      'Сколько перешедших покупают отчёт на сайте партнёра.'],
+    ['comm', 'Наша комиссия с одной продажи, €', 4, 0, 20, 0.1, 'факт: carVertical платил 4 €',
+      'Сколько партнёр платит нам за каждую продажу по нашей ссылке. Его отчёт делает он сам, нам это ничего не стоит.'],
+    ['cprC', 'Стоимость производства одного бесплатного отчёта, €', 0, 0, 5, 0.05, 'не знаю — впишите своё',
+      'Сколько нам стоит сделать один бесплатный отчёт: ИИ, данные, работа людей. Считается на каждый выданный отчёт.']
   ]
 };
-var PRESETS = {
-  'Наши цифры': {},
-  'Идея Жени, как он её видит': { people: 5000, emailB: 20, click: 15, buy: 10, emailC: 20, clickC: 15, buyC: 10 }
-};
-var BASE = 1000; // нынешний трафик, к нему привязаны расходы
+var GROUPS = ['s', 'a', 'b', 'c'];
+var BASE = 1000; // при таком трафике расходы равны полю «Расходы в месяц»
 var v = {}, def = {};
-['s', 'a', 'b', 'c'].forEach(function (g) { F[g].forEach(function (f) { def[f[0]] = f[2]; v[f[0]] = f[2]; }); });
+GROUPS.forEach(function (g) { F[g].forEach(function (f) { def[f[0]] = f[2]; v[f[0]] = f[2]; }); });
 location.hash.slice(1).split('&').forEach(function (p) {
   var kv = p.split('=');
   if (kv[0] in v && kv[1] !== undefined && kv[1] !== '' && !isNaN(+kv[1])) v[kv[0]] = +kv[1];
@@ -115,11 +144,12 @@ function fmt(x, d) {
   return x.toLocaleString('ru-RU', { maximumFractionDigits: d === undefined ? (x < 10 ? 1 : 0) : d, minimumFractionDigits: 0 });
 }
 function eur(x) { return fmt(Math.round(x), 0) + ' €'; }
+function tip(t) { return '<span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="' + t + '">?</span>'; }
 
 function build() {
-  ['s', 'a', 'b', 'c'].forEach(function (g) {
+  GROUPS.forEach(function (g) {
     document.getElementById('in-' + g).innerHTML = F[g].map(function (f) {
-      return '<div class="f"><label for="n_' + f[0] + '">' + f[1] + '</label><div class="line">' +
+      return '<div class="f"><div class="lh"><label for="n_' + f[0] + '">' + f[1] + '</label>' + tip(f[7]) + '</div><div class="line">' +
         '<input type="number" id="n_' + f[0] + '" min="' + f[3] + '" step="' + f[5] + '">' +
         '<input type="range" id="r_' + f[0] + '" min="' + f[3] + '" max="' + f[4] + '" step="' + f[5] + '" aria-label="' + f[1] + '">' +
         '</div><small>' + f[6] + '</small></div>';
@@ -134,13 +164,8 @@ function build() {
       });
     });
   });
-  var box = document.getElementById('presets');
-  box.innerHTML = Object.keys(PRESETS).map(function (k) { return '<button type="button" data-p="' + k + '">' + k + '</button>'; }).join('');
-  box.addEventListener('click', function (e) {
-    var k = e.target.getAttribute('data-p');
-    if (!k) return;
+  document.getElementById('reset').addEventListener('click', function () {
     Object.keys(def).forEach(function (n) { v[n] = def[n]; });
-    Object.keys(PRESETS[k]).forEach(function (n) { v[n] = PRESETS[k][n]; });
     sync();
   });
 }
@@ -151,23 +176,24 @@ function funnel(id, rows) {
     return '<div class="row"><div class="num">' + fmt(r[0]) + '</div><div class="bar c' + r[2] + '" style="width:' + w.toFixed(1) + '%">' + r[1] + '</div></div>';
   }).join('');
 }
-function result(idR, idB, revDay, reportsDay) {
+// revDay — выручка за день; outDay — производство отчётов за день
+function result(idR, idB, revDay, outDay) {
   var month = revDay * 30;
-  var repCostDay = reportsDay * v.cpr;
   var costsMonth = v.cost * v.people / BASE;
-  var profit = month - costsMonth - repCostDay * 30;
+  var profit = month - costsMonth - outDay * 30;
   document.getElementById(idR).innerHTML =
-    '<div><b>' + fmt(revDay, 2) + ' €</b><span>нам в день</span></div>' +
-    '<div><b>' + eur(month) + '</b><span>нам в месяц</span></div>' +
-    '<div class="' + (profit >= 0 ? 'good' : 'bad') + '"><b>' + (profit >= 0 ? '+' : '−') + eur(Math.abs(profit)) + '</b><span>после расходов, в месяц</span></div>';
+    '<div><b>' + fmt(revDay, 2) + ' €</b><span>выручка в день</span></div>' +
+    '<div><b>' + eur(month) + '</b><span>выручка в месяц</span></div>' +
+    '<div class="' + (profit >= 0 ? 'good' : 'bad') + '"><b>' + (profit >= 0 ? '+' : '−') + eur(Math.abs(profit)) + '</b><span>прибыль в месяц, после всех расходов</span></div>';
   var k = v.people ? BASE / v.people : 0;
-  var inK = revDay * k, outK = (v.cost / 30 + repCostDay * k);
-  var txt = 'Расходы при ' + fmt(v.people, 0) + ' людях в день: ' + eur(costsMonth) + ' в месяц. ' +
-    'Каждая 1 000 людей приносит ' + fmt(inK, 2) + ' € в день, а стоит ' + fmt(outK, 2) + ' €. ';
+  var inK = revDay * k, outK = v.cost / 30 + outDay * k;
+  var txt = 'Расходы на сайт при ' + fmt(v.people, 0) + ' посетителях в день: ' + eur(costsMonth) + ' в месяц' +
+    (outDay > 0 ? ', производство отчётов: ' + eur(outDay * 30) + ' в месяц' : '') + '. ' +
+    'Каждая 1 000 посетителей приносит ' + fmt(inK, 2) + ' € в день, а стоит ' + fmt(outK, 2) + ' €. ';
   txt += !v.people ? '' : inK >= outK
     ? 'Значит, в плюсе при любом трафике.'
     : (inK > 0
-      ? 'Больше людей не спасёт: расходы растут вместе с ними. Нужно, чтобы каждый человек приносил в ' + fmt(outK / inK, 1) + ' раза больше.'
+      ? 'Больше людей не спасёт: расходы растут вместе с ними. Нужно, чтобы каждый посетитель приносил в ' + fmt(outK / inK, 1) + ' раза больше.'
       : 'Больше людей не спасёт: расходы растут вместе с ними.');
   document.getElementById(idB).textContent = txt;
 }
@@ -179,20 +205,17 @@ function sync(skipId) {
     });
   });
   var ordA = v.people * v.email / 100, gotA = ordA * v.got / 100, saw = gotA * v.see / 100, paid = saw * v.pay / 100;
-  funnel('fa', [[v.people, '👥 пришли на сайт', 1], [ordA, '✉️ заказали отчёт (оставили почту)', 2], [gotA, '📄 получили отчёт', 3], [saw, '💶 дошли до окна оплаты', 4], [paid, '✅ заплатили', 6]]);
-  result('ra', 'ba', paid * v.price, gotA);
+  funnel('fa', [[v.people, '👥 пришли на сайт', 1], [ordA, '✉️ заказали отчёт (оставили почту)', 2], [gotA, '📄 получили отчёт', 3], [saw, '💶 увидели цену второго отчёта', 4], [paid, '✅ заплатили', 6]]);
+  result('ra', 'ba', paid * v.price, (gotA + paid) * v.cprA);
   var gotB = v.people * v.emailB / 100, opened = gotB * v.open / 100, clicked = opened * v.click / 100, bought = clicked * v.buy / 100;
-  funnel('fb', [[v.people, '👥 пришли на сайт', 1], [gotB, '📄 заказали и получили бесплатный отчёт', 2], [opened, '👀 открыли его', 4], [clicked, '👉 нажали на глубокий отчёт', 5], [bought, '✅ купили наш глубокий отчёт', 6]]);
-  result('rb', 'bb', bought * v.priceB, gotB);
+  funnel('fb', [[v.people, '👥 пришли на сайт', 1], [gotB, '📄 заказали и получили бесплатный отчёт', 2], [opened, '👀 открыли письмо', 4], [clicked, '👉 нажали «купить глубокий отчёт»', 5], [bought, '✅ купили наш глубокий отчёт', 6]]);
+  result('rb', 'bb', bought * v.priceB, gotB * v.cprB + bought * v.costDeep);
   var gotC = v.people * v.emailC / 100, openedC = gotC * v.openC / 100, clickedC = openedC * v.clickC / 100, boughtC = clickedC * v.buyC / 100;
-  funnel('fc', [[v.people, '👥 пришли на сайт', 1], [gotC, '📄 заказали и получили бесплатный отчёт', 2], [openedC, '👀 открыли его', 4], [clickedC, '👉 нажали на отчёт партнёра', 5], [boughtC, '✅ купили у партнёра', 6]]);
-  result('rc', 'bc', boughtC * v.comm, gotC);
+  funnel('fc', [[v.people, '👥 пришли на сайт', 1], [gotC, '📄 заказали и получили бесплатный отчёт', 2], [openedC, '👀 открыли письмо', 4], [clickedC, '👉 перешли к партнёру', 5], [boughtC, '✅ купили у партнёра', 6]]);
+  result('rc', 'bc', boughtC * v.comm, gotC * v.cprC);
   var hash = Object.keys(v).filter(function (n) { return v[n] !== def[n]; }).map(function (n) { return n + '=' + v[n]; }).join('&');
   history.replaceState(null, '', hash ? '#' + hash : location.pathname);
-  Array.prototype.forEach.call(document.querySelectorAll('#presets button'), function (b) {
-    var p = PRESETS[b.getAttribute('data-p')];
-    b.className = Object.keys(def).every(function (n) { return v[n] === (n in p ? p[n] : def[n]); }) ? 'on' : '';
-  });
+  document.getElementById('reset').className = hash ? '' : 'on';
 }
 build();
 sync();
