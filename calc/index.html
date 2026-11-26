@@ -61,13 +61,13 @@
       <div class="res" id="rb"></div><div class="be" id="bb"></div>
     </div>
   </div>
-  <p class="foot">Подписи «факт» — база и почтовая служба AutoPase за 19–25.11.2026. «Оценка» — предположение, меняйте. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Страница закрыта от поисковиков.</p>
+  <p class="foot">Подписи «факт» — база и почтовая служба AutoPase за 19–25.11.2026. «Оценка» — предположение, меняйте. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Для сверки: ссылки carVertical на сайте давали 15 продаж за 28 дней, по 4 € нам. Страница закрыта от поисковиков.</p>
 </div>
 <script>
 var F = {
   s: [
     ['people', 'Людей на сайте в день', 1000, 0, 20000, 100, 'факт: около 1 000'],
-    ['costs', 'Расходы в месяц, €', 3000, 0, 10000, 100, 'ваши цифры от 20.11'],
+    ['cost', 'Расходы в месяц при нынешних 1 000 людях в день, €', 600, 0, 5000, 50, 'сейчас 600 €. Растут вместе с трафиком: 2 000 людей в день — 1 200 €'],
     ['cpr', 'Стоимость одного отчёта, €', 0, 0, 3, 0.05, 'ИИ и люди. Не знаю — впишите своё']
   ],
   a: [
@@ -91,6 +91,7 @@ var PRESETS = {
   'Наши цифры': {},
   'Идея Жени, как он её видит': { people: 5000, emailB: 20, click: 15, buy: 10 }
 };
+var BASE = 1000; // нынешний трафик, к нему привязаны расходы
 var v = {}, def = {};
 ['s', 'a', 'b'].forEach(function (g) { F[g].forEach(function (f) { def[f[0]] = f[2]; v[f[0]] = f[2]; }); });
 location.hash.slice(1).split('&').forEach(function (p) {
@@ -141,15 +142,22 @@ function funnel(id, rows) {
 function result(idR, idB, revDay, reportsDay) {
   var month = revDay * 30;
   var repCostDay = reportsDay * v.cpr;
-  var profit = month - v.costs - repCostDay * 30;
+  var costsMonth = v.cost * v.people / BASE;
+  var profit = month - costsMonth - repCostDay * 30;
   document.getElementById(idR).innerHTML =
     '<div><b>' + fmt(revDay, 2) + ' €</b><span>нам в день</span></div>' +
     '<div><b>' + eur(month) + '</b><span>нам в месяц</span></div>' +
     '<div class="' + (profit >= 0 ? 'good' : 'bad') + '"><b>' + (profit >= 0 ? '+' : '−') + eur(Math.abs(profit)) + '</b><span>после расходов, в месяц</span></div>';
-  var margin = v.people ? (revDay - repCostDay) / v.people : 0;
-  document.getElementById(idB).textContent = margin > 0
-    ? 'Чтобы выйти в ноль, нужно ' + fmt(Math.ceil(v.costs / 30 / margin), 0) + ' человек в день (сейчас ' + fmt(v.people, 0) + ').'
-    : 'В ноль не выходит при любом трафике: посетитель приносит не больше, чем стоит его отчёт.';
+  var k = v.people ? BASE / v.people : 0;
+  var inK = revDay * k, outK = (v.cost / 30 + repCostDay * k);
+  var txt = 'Расходы при ' + fmt(v.people, 0) + ' людях в день: ' + eur(costsMonth) + ' в месяц. ' +
+    'Каждая 1 000 людей приносит ' + fmt(inK, 2) + ' € в день, а стоит ' + fmt(outK, 2) + ' €. ';
+  txt += !v.people ? '' : inK >= outK
+    ? 'Значит, в плюсе при любом трафике.'
+    : (inK > 0
+      ? 'Больше людей не спасёт: расходы растут вместе с ними. Нужно, чтобы каждый человек приносил в ' + fmt(outK / inK, 1) + ' раза больше.'
+      : 'Больше людей не спасёт: расходы растут вместе с ними.');
+  document.getElementById(idB).textContent = txt;
 }
 function sync(skipId) {
   Object.keys(v).forEach(function (n) {
