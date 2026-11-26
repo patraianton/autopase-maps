@@ -45,13 +45,37 @@
   .tip:hover::after, .tip:focus::after { content:attr(data-tip); position:absolute; left:0; right:0; bottom:calc(100% + 6px); background:var(--ink); color:#fff; font:500 13.5px/1.4 system-ui; padding:9px 12px; border-radius:10px; z-index:20; box-shadow:0 8px 24px #10182833; text-align:left; letter-spacing:0; }
   h2 { position:relative; }
   h2 .tip:hover::after, h2 .tip:focus::after { bottom:auto; top:calc(100% + 4px); font-size:13.5px; font-weight:500; }
+  .scen { position:sticky; top:0; z-index:30; background:var(--bg); padding:10px 0 10px; margin:0 0 6px; border-bottom:1px solid var(--line); }
+  .srow { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px; }
+  .st { font-size:15px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { display:inline-flex; align-items:center; border:2px solid var(--ink); background:#fff; border-radius:999px; overflow:hidden; }
+  .chip button { border:0; background:none; color:var(--ink); font:600 14.5px system-ui; padding:7px 14px; cursor:pointer; }
+  .chip .x { padding:7px 11px 7px 4px; font-size:17px; line-height:1; color:var(--mut); }
+  .chip .x:hover { color:var(--red); }
+  .chip.on { background:var(--ink); }
+  .chip.on button { color:#fff; }
+  #sname { flex:1; min-width:220px; max-width:380px; font:500 15px system-ui; padding:8px 12px; border:2px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
+  .act { border:2px solid var(--ink); background:var(--ink); color:#fff; border-radius:10px; padding:8px 14px; font:650 14.5px system-ui; cursor:pointer; }
+  .act.ghost { background:#fff; color:var(--ink); }
+  .msg { color:var(--grn); font-weight:650; font-size:14px; }
+  .scen small { color:var(--mut); font-size:12.5px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Сколько приносят отчёты</h1>
   <p class="sub">Три способа зарабатывать на отчётах. Двигайте числа — воронка и деньги пересчитаются. Воронка за один день, деньги за 30 дней. Адрес страницы запоминает ваши числа. Наведите на «?» или нажмите его — появится подсказка.</p>
-  <div class="presets"><button type="button" id="reset">Вернуть наши цифры</button></div>
+  <div class="scen">
+    <div class="srow"><b class="st">Сценарии:</b><div class="chips" id="chips"></div></div>
+    <div class="srow">
+      <input id="sname" maxlength="40" placeholder="Название, например «Партнёр, 10 % нажимают»" aria-label="Название сценария">
+      <button type="button" id="save" class="act">Сохранить текущие цифры</button>
+      <button type="button" id="share" class="act ghost">Скопировать ссылку</button>
+      <span id="msg" class="msg"></span>
+    </div>
+    <small>Сценарии хранятся в этом браузере. Чтобы показать другому человеку, отправьте ему ссылку: в ней все числа.</small>
+  </div>
 
   <div class="card"><h2>Общее для всех трёх вариантов <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Трафик и расходы на сайт. Одинаковы для А, Б и В.">?</span></h2><div class="inputs" id="in-s"></div></div>
 
@@ -137,10 +161,83 @@ var GROUPS = ['s', 'a', 'b', 'c'];
 var BASE = 1000; // при таком трафике расходы равны полю «Расходы в месяц»
 var v = {}, def = {};
 GROUPS.forEach(function (g) { F[g].forEach(function (f) { def[f[0]] = f[2]; v[f[0]] = f[2]; }); });
-location.hash.slice(1).split('&').forEach(function (p) {
-  var kv = p.split('=');
-  if (kv[0] in v && kv[1] !== undefined && kv[1] !== '' && !isNaN(+kv[1])) v[kv[0]] = +kv[1];
-});
+// Числа сценария живут в строке вида «people=3000&cost=500» — и в адресе страницы, и в сохранённых сценариях
+function applyHash(str) {
+  Object.keys(def).forEach(function (n) { v[n] = def[n]; });
+  (str || '').replace(/^#/, '').split('&').forEach(function (p) {
+    var kv = p.split('=');
+    if (kv[0] in v && kv[1] !== undefined && kv[1] !== '' && !isNaN(+kv[1])) v[kv[0]] = +kv[1];
+  });
+}
+function curHash() {
+  return Object.keys(v).filter(function (n) { return v[n] !== def[n]; }).map(function (n) { return n + '=' + v[n]; }).join('&');
+}
+applyHash(location.hash);
+
+// Сохранённые сценарии — в памяти этого браузера
+var KEY = 'autopase-calc-scenarios';
+function loadSc() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+function saveSc(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
+function say(t) {
+  var m = document.getElementById('msg');
+  m.textContent = t;
+  clearTimeout(say.t);
+  say.t = setTimeout(function () { m.textContent = ''; }, 2500);
+}
+function drawChips() {
+  var box = document.getElementById('chips'), h = curHash();
+  box.innerHTML = '';
+  var all = [{ name: 'Наши цифры', vals: '', fixed: true }].concat(loadSc());
+  all.forEach(function (s, i) {
+    var chip = document.createElement('span');
+    chip.className = 'chip' + (s.vals === h ? ' on' : '');
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s.name;
+    b.title = 'Открыть сценарий';
+    b.addEventListener('click', function () { applyHash(s.vals); sync(); });
+    chip.appendChild(b);
+    if (!s.fixed) {
+      var x = document.createElement('button');
+      x.type = 'button';
+      x.className = 'x';
+      x.textContent = '×';
+      x.title = 'Удалить сценарий';
+      x.setAttribute('aria-label', 'Удалить сценарий ' + s.name);
+      x.addEventListener('click', function () {
+        var list = loadSc();
+        list.splice(i - 1, 1);
+        saveSc(list);
+        drawChips();
+        say('Удалён: ' + s.name);
+      });
+      chip.appendChild(x);
+    }
+    box.appendChild(chip);
+  });
+}
+function initScenarios() {
+  var inp = document.getElementById('sname');
+  function save() {
+    var list = loadSc();
+    var name = inp.value.trim() || ('Сценарий ' + (list.length + 1));
+    var vals = curHash();
+    var at = list.findIndex(function (s) { return s.name === name; });
+    if (at >= 0) list[at].vals = vals; else list.push({ name: name, vals: vals });
+    saveSc(list);
+    inp.value = '';
+    drawChips();
+    say('Сохранён: ' + name);
+  }
+  document.getElementById('save').addEventListener('click', save);
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') save(); });
+  document.getElementById('share').addEventListener('click', function () {
+    var url = location.href;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function () { say('Ссылка скопирована — в ней все числа'); }, function () { say(url); });
+    } else say(url);
+  });
+}
 
 function fmt(x, d) {
   return x.toLocaleString('ru-RU', { maximumFractionDigits: d === undefined ? (x < 10 ? 1 : 0) : d, minimumFractionDigits: 0 });
@@ -166,10 +263,7 @@ function build() {
       });
     });
   });
-  document.getElementById('reset').addEventListener('click', function () {
-    Object.keys(def).forEach(function (n) { v[n] = def[n]; });
-    sync();
-  });
+  initScenarios();
 }
 function funnel(id, rows) {
   var top = Math.log10(1 + rows[0][0] * 9) || 1;
@@ -219,9 +313,9 @@ function sync(skipId) {
   var gotC = v.people * v.emailC / 100, openedC = gotC * v.openC / 100, clickedC = openedC * v.clickC / 100, boughtC = clickedC * v.buyC / 100;
   funnel('fc', [[v.people, '👥 пришли на сайт', 1], [gotC, '📄 заказали и получили бесплатный отчёт', 2], [openedC, '👀 открыли письмо', 4], [clickedC, '👉 перешли к партнёру', 5], [boughtC, '✅ купили у партнёра', 6]]);
   result('rc', 'bc', boughtC * v.comm, gotC * v.cprC);
-  var hash = Object.keys(v).filter(function (n) { return v[n] !== def[n]; }).map(function (n) { return n + '=' + v[n]; }).join('&');
+  var hash = curHash();
   history.replaceState(null, '', hash ? '#' + hash : location.pathname);
-  document.getElementById('reset').className = hash ? '' : 'on';
+  drawChips();
 }
 build();
 sync();
