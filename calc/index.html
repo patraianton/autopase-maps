@@ -6,129 +6,85 @@
 <meta name="robots" content="noindex,nofollow">
 <title>AutoPase: сколько приносят отчёты</title>
 <style>
-  :root { --ink:#0f172a; --mut:#64748b; --bg:#f4f1ea; --card:#fff; --line:#e6e1d6; --good:#15803d; --bad:#dc2626; --a:#2563eb; --b:#0d9488; --c:#ea580c; }
+  :root { --ink:#0f172a; --mut:#64748b; --bg:#f4f1ea; --card:#fff; --line:#ece8df; --good:#15803d; --bad:#dc2626; --a:#2563eb; --b:#0d9488; --c:#ea580c; }
   * { box-sizing:border-box; }
   html, body { overflow-x:hidden; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
-  .wrap { max-width:1480px; margin:0 auto; padding:20px 18px 60px; }
-  h1 { font-size:30px; margin:0 0 2px; letter-spacing:-.5px; }
-  .sub { color:var(--mut); margin:0 0 12px; font-size:15px; }
-  .sub .chgdemo { display:inline-block; width:16px; height:12px; border:2px solid #f59e0b; background:#fffbeb; border-radius:4px; vertical-align:-1px; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:1180px; margin:0 auto; padding:14px 16px 30px; }
 
-  /* сценарии */
-  .scen { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:4px; }
-  .st { font-weight:700; font-size:15px; }
-  .chips { display:flex; flex-wrap:wrap; gap:6px; }
-  .chip { display:inline-flex; align-items:center; border:2px solid var(--ink); background:#fff; border-radius:999px; overflow:hidden; }
-  .chip button { border:0; background:none; color:var(--ink); font:600 14px system-ui; padding:6px 13px; cursor:pointer; }
-  .chip .x { padding:6px 10px 6px 2px; font-size:17px; line-height:1; color:var(--mut); }
+  .top { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin-bottom:10px; }
+  h1 { position:relative; font-size:21px; margin:0; letter-spacing:-.3px; display:flex; align-items:center; gap:6px; }
+  .scen { position:relative; display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-left:auto; }
+  .chips { display:flex; flex-wrap:wrap; gap:5px; }
+  .chip { display:inline-flex; align-items:center; border:1.5px solid var(--ink); background:#fff; border-radius:999px; overflow:hidden; }
+  .chip button { border:0; background:none; color:var(--ink); font:600 13px system-ui; padding:4px 10px; cursor:pointer; }
+  .chip .x { padding:4px 8px 4px 0; font-size:15px; line-height:1; color:var(--mut); }
   .chip .x:hover { color:var(--bad); }
   .chip.on { background:var(--ink); } .chip.on button { color:#fff; }
-  #sname { flex:1 1 220px; min-width:0; max-width:340px; font:500 14.5px system-ui; padding:7px 11px; border:2px solid #d0d5dd; border-radius:10px; background:#fff; color:var(--ink); }
-  .act { border:2px solid var(--ink); background:var(--ink); color:#fff; border-radius:10px; padding:7px 13px; font:650 14px system-ui; cursor:pointer; }
+  #sname { width:170px; font:500 13px system-ui; padding:5px 9px; border:1.5px solid #d0d5dd; border-radius:8px; background:#fff; color:var(--ink); }
+  .act { border:1.5px solid var(--ink); background:var(--ink); color:#fff; border-radius:8px; padding:5px 10px; font:650 13px system-ui; cursor:pointer; }
   .act.ghost { background:#fff; color:var(--ink); }
-  .msg { color:var(--good); font-weight:650; font-size:14px; }
-  .scen-note { color:var(--mut); font-size:12.5px; margin:2px 0 6px; }
+  .msg { color:var(--good); font-weight:650; font-size:13px; }
 
-  /* итог сверху */
-  .board { position:sticky; top:0; z-index:40; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:10px 0 12px; background:var(--bg); }
-  .sc { position:relative; background:var(--card); border-radius:14px; padding:11px 16px 12px; border-top:6px solid var(--vc); box-shadow:0 1px 0 #0000000d,0 8px 22px #0f172a10; }
+  .card { position:relative; background:var(--card); border-radius:12px; padding:10px 14px; box-shadow:0 1px 0 #0000000d,0 6px 18px #0f172a0d; }
+  .gen { display:flex; flex-wrap:wrap; gap:8px 26px; align-items:center; margin-bottom:10px; }
+  .g { position:relative; display:flex; align-items:center; gap:6px; font-weight:600; }
+
+  .cols { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+  .col { border-top:5px solid var(--vc); }
   .a { --vc:var(--a); } .b { --vc:var(--b); } .c { --vc:var(--c); }
-  .sc-h { display:flex; gap:8px; align-items:center; font-weight:700; font-size:15px; padding-right:110px; }
-  .badge { flex:none; width:26px; height:26px; border-radius:8px; background:var(--vc); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; }
-  .sc-big { font-size:36px; font-weight:800; letter-spacing:-1px; line-height:1.1; margin-top:6px; }
-  .sc-big small { font-size:15px; font-weight:600; color:var(--mut); letter-spacing:0; }
+  .hd { position:relative; display:flex; align-items:center; gap:6px; font-weight:750; font-size:15px; }
+  .badge { flex:none; width:22px; height:22px; border-radius:6px; background:var(--vc); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; }
+  .best-tag { margin-left:auto; background:#fef3c7; color:#92400e; font-size:11.5px; font-weight:750; border-radius:999px; padding:2px 8px; visibility:hidden; }
+  .col.best .best-tag { visibility:visible; }
+  .big { font-size:28px; font-weight:800; letter-spacing:-.8px; line-height:1.1; margin-top:4px; }
+  .big small { font-size:13px; font-weight:600; color:var(--mut); letter-spacing:0; }
   .good { color:var(--good); } .bad { color:var(--bad); }
-  .sc-sub { font-size:13.5px; color:var(--mut); margin-top:2px; }
-  .sc-v { font-size:14px; font-weight:650; margin-top:5px; }
-  .best-tag { position:absolute; top:11px; right:12px; background:#fef3c7; color:#92400e; font-size:12.5px; font-weight:750; border-radius:999px; padding:3px 10px; display:none; }
-  .sc.best .best-tag { display:block; }
+  .sub { position:relative; display:flex; align-items:center; gap:5px; color:var(--mut); font-size:12.5px; margin-top:1px; }
+  .ver { position:relative; display:flex; align-items:center; gap:5px; font-weight:650; font-size:12.5px; margin:3px 0 6px; }
 
-  /* карточки */
-  .card { position:relative; background:var(--card); border-radius:16px; padding:16px 18px; box-shadow:0 1px 0 #0000000d,0 8px 22px #0f172a0d; }
-  .gen { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px 22px; margin-bottom:14px; }
-  .gen h2 { grid-column:1/-1; margin:0; }
-  h2 { position:relative; font-size:18px; margin:0 0 10px; display:flex; gap:8px; align-items:flex-start; line-height:1.3; }
-  .cols { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-  .col { border-top:6px solid var(--vc); }
-  .cap { font-size:12px; font-weight:750; letter-spacing:.08em; text-transform:uppercase; color:var(--mut); margin:16px 0 8px; }
+  .row { position:relative; display:flex; align-items:center; gap:5px; padding:5px 0 7px; border-top:1px solid var(--line); }
+  .row .arr { color:var(--vc); font-weight:800; width:10px; }
+  .row .lbl { flex:1; min-width:0; }
+  .row b { font-size:17px; font-weight:800; letter-spacing:-.3px; min-width:44px; text-align:right; }
+  .row i { position:absolute; left:0; bottom:0; height:3px; background:var(--vc); border-radius:2px; opacity:.75; transition:width .2s; }
+  .row.first .lbl { font-weight:650; }
+  .mrow { position:relative; display:flex; align-items:center; gap:5px; padding:5px 0; border-top:1px dashed var(--line); }
+  .mrow .lbl { flex:1; min-width:0; }
+  .mtitle { font-size:11px; font-weight:750; letter-spacing:.07em; text-transform:uppercase; color:var(--mut); margin:6px 0 1px; }
 
-  /* поле */
-  .gf, .mf, .conv { position:relative; }
-  .gf label { display:block; font-weight:650; font-size:14.5px; margin-bottom:5px; }
-  .inrow { display:flex; align-items:center; gap:6px; }
-  .unit { font-weight:700; color:var(--mut); }
-  input[type=number] { width:88px; font:700 17px system-ui; padding:5px 8px; border:2px solid #d0d5dd; border-radius:9px; background:#fff; color:var(--ink); }
+  input[type=number] { width:58px; font:650 14px system-ui; padding:2px 5px; border:1.5px solid #d0d5dd; border-radius:6px; background:#fff; color:var(--ink); }
   input[type=number]:focus { outline:none; border-color:var(--ink); }
   input.chg { border-color:#f59e0b; background:#fffbeb; }
-  .note { font-size:12.5px; color:var(--mut); }
-  .gf .note { margin-top:4px; display:block; }
+  .unit { color:var(--mut); font-weight:650; }
 
-  /* воронка */
-  .cnt { display:grid; grid-template-columns:78px minmax(0,1fr); gap:12px; align-items:end; }
-  .cnt b { font-size:26px; font-weight:800; text-align:right; letter-spacing:-.6px; line-height:1.1; white-space:nowrap; }
-  .cnt .lbl { font-weight:650; font-size:15px; }
-  .track { height:10px; background:#eef0f3; border-radius:5px; overflow:hidden; margin-top:4px; }
-  .track i { display:block; height:100%; background:var(--vc); border-radius:5px; transition:width .2s; }
-  .conv { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; margin:7px 0 7px 90px; padding:7px 10px; background:#f8f7f3; border-left:3px solid var(--vc); border-radius:0 10px 10px 0; font-size:14.5px; }
-  .conv input[type=number] { width:74px; font-size:16px; padding:4px 7px; }
-  .conv .arr { color:var(--vc); font-weight:800; }
-  .conv .note { flex-basis:100%; }
-
-  /* деньги */
-  .mf { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 12px; align-items:center; padding:8px 0; border-top:1px dashed var(--line); }
-  .mf:first-of-type { border-top:0; }
-  .mf label { font-weight:650; font-size:14.5px; display:block; }
-  .ct .tip, .mf label .tip, .gf label .tip { display:inline-flex; vertical-align:-4px; margin-left:2px; }
-  .mf .note { grid-column:1/-1; }
-
-  /* итог в колонке */
-  .eq { background:#f8f7f3; border-radius:12px; padding:10px 14px; }
-  .eq div { display:flex; justify-content:space-between; gap:10px; padding:3px 0; font-size:15px; }
-  .eq div b { white-space:nowrap; }
-  .eq .tot { border-top:2px solid var(--ink); margin-top:4px; padding-top:7px; font-size:18px; font-weight:800; }
-  .why { font-size:13.5px; color:var(--mut); margin:8px 0 0; }
-
-  /* подсказки «?» */
-  .tip { flex:none; display:inline-flex; align-items:center; justify-content:center; width:19px; height:19px; margin-top:1px; border-radius:50%; background:#e4e7ec; color:#344054; font:700 12.5px system-ui; cursor:help; }
+  .tip { flex:none; display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:#e4e7ec; color:#344054; font:700 11px system-ui; cursor:help; vertical-align:1px; }
   .tip:hover, .tip:focus { background:var(--ink); color:#fff; outline:none; }
-  .tip:hover::after, .tip:focus::after { content:attr(data-tip); position:absolute; left:0; right:0; bottom:calc(100% + 6px); background:var(--ink); color:#fff; font:500 13.5px/1.4 system-ui; padding:9px 12px; border-radius:10px; z-index:50; box-shadow:0 8px 24px #10182833; text-align:left; letter-spacing:0; text-transform:none; }
-  h2 .tip:hover::after, h2 .tip:focus::after { bottom:auto; top:calc(100% + 4px); }
+  .tip:hover::after, .tip:focus::after { content:attr(data-tip); white-space:pre-line; position:absolute; left:0; right:0; min-width:220px; bottom:calc(100% + 4px); background:var(--ink); color:#fff; font:500 12.5px/1.4 system-ui; padding:8px 10px; border-radius:8px; z-index:50; box-shadow:0 8px 24px #10182833; text-align:left; letter-spacing:0; text-transform:none; }
+  .hd .tip:hover::after, .hd .tip:focus::after, h1 .tip:hover::after, h1 .tip:focus::after, .scen .tip:hover::after, .scen .tip:focus::after { bottom:auto; top:calc(100% + 4px); }
+  h1 .tip:hover::after, h1 .tip:focus::after { width:360px; right:auto; }
+  .scen .tip:hover::after, .scen .tip:focus::after { left:auto; right:0; width:300px; }
 
-  .foot { color:var(--mut); font-size:13px; margin-top:22px; }
-
-  @media (max-width:1100px) { .cols, .gen { grid-template-columns:minmax(0,1fr); } }
-  @media (max-width:900px) { .board { position:static; } }
-  @media (max-width:640px) {
-    .board { grid-template-columns:minmax(0,1fr); }
-    .sc-big { font-size:30px; }
-    .conv { margin-left:0; }
-    h1 { font-size:25px; }
-  }
+  @media (max-width:900px) { .cols { grid-template-columns:minmax(0,1fr); } .scen { margin-left:0; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Сколько приносят отчёты</h1>
-  <p class="sub">Три способа зарабатывать на отчётах. Меняйте числа — итог сверху пересчитается сразу. Воронка за один день, деньги за месяц. <span class="chgdemo"></span> — число изменено против наших цифр. «?» — подсказка.</p>
-
-  <div class="scen">
-    <span class="st">Сценарии:</span>
-    <div class="chips" id="chips"></div>
-    <input id="sname" maxlength="40" placeholder="Название нового сценария" aria-label="Название сценария" autocomplete="off" data-lpignore="true" data-1p-ignore>
-    <button type="button" id="save" class="act">Сохранить</button>
-    <button type="button" id="share" class="act ghost">Скопировать ссылку</button>
-    <span id="msg" class="msg"></span>
+  <div class="top">
+    <h1>Сколько приносят отчёты <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Три способа зарабатывать на отчётах. Меняйте числа — всё пересчитается сразу. Воронка за один день, деньги за месяц.&#10;Жёлтая рамка — число изменено против наших цифр.&#10;«Факт» в подсказках — неделя 19–25.11.2026 без команды и проверок: база сайта, почтовая служба, счётчик посещений. «Оценка» — предположение.">?</span></h1>
+    <div class="scen">
+      <div class="chips" id="chips"></div>
+      <input id="sname" maxlength="40" placeholder="Название сценария" aria-label="Название сценария" autocomplete="off" data-lpignore="true" data-1p-ignore>
+      <button type="button" id="save" class="act">Сохранить</button>
+      <button type="button" id="share" class="act ghost">Ссылка</button>
+      <span class="tip" tabindex="0" role="button" aria-label="Подсказка" data-tip="Сценарии хранятся в этом браузере. Чтобы показать другому человеку, нажмите «Ссылка» и отправьте её: в ней все числа.">?</span>
+      <span id="msg" class="msg"></span>
+    </div>
   </div>
-  <div class="scen-note">Сценарии хранятся в этом браузере. Чтобы показать другому человеку, отправьте ему ссылку: в ней все числа.</div>
-
-  <div class="board" id="board"></div>
 
   <div class="card gen" id="gen"></div>
 
   <div class="cols" id="cols"></div>
-
-  <p class="foot">«Факт» — неделя 19–25.11.2026 без команды и проверок: база сайта, почтовая служба Resend, счётчик посещений. «Оценка» — предположение, меняйте. Страница закрыта от поисковиков.</p>
 </div>
 <script>
 // Каждое число: l — название, d — наше значение, s — шаг, u — единица, n — откуда цифра, t — подсказка
@@ -219,7 +175,7 @@ function fullHash() { return Object.keys(v).map(function (n) { return n + '=' + 
 applyHash(location.hash);
 
 function fmt(x, d) {
-  return x.toLocaleString('ru-RU', { maximumFractionDigits: d === undefined ? (x < 10 ? 1 : 0) : d, minimumFractionDigits: 0 });
+  return x.toLocaleString('ru-RU', { maximumFractionDigits: d === undefined ? (x < 1 ? 2 : x < 10 ? 1 : 0) : d, minimumFractionDigits: 0 });
 }
 function eur(x) { return fmt(Math.round(x), 0) + ' €'; }
 function signed(x) { return (x >= 0 ? '+' : '−') + eur(Math.abs(x)); }
@@ -231,34 +187,29 @@ function inp(k) {
 }
 function el(id) { return document.getElementById(id); }
 
+var SHORT = { people: 'Посетителей в день', cost: 'Расходы в месяц при 1 000 в день', step: '+ на каждую следующую 1 000',
+  price: 'Цена отчёта', cprA: 'Производство отчёта', priceB: 'Цена глубокого отчёта', costDeep: 'Производство глубокого',
+  cprB: 'Производство бесплатного', comm: 'Комиссия с продажи', cprC: 'Производство бесплатного' };
+function tipOf(k) { var n = M[k].n; return M[k].t + '&#10;' + n.charAt(0).toUpperCase() + n.slice(1) + '.'; }
+
 function build() {
-  el('gen').innerHTML = '<h2>Общее для всех трёх вариантов ' + tip('Трафик и расходы на сайт. Одинаковы для А, Б и В.') + '</h2>' +
-    GEN.map(function (k) {
-      return '<div class="gf"><label for="in_' + k + '">' + M[k].l + ', ' + (M[k].u || 'человек') + ' ' + tip(M[k].t) + '</label>' + inp(k) + '<span class="note">' + M[k].n + '</span></div>';
-    }).join('');
-
-  el('board').innerHTML = V.map(function (x) {
-    return '<div class="sc ' + x.id + '" id="sc_' + x.id + '"><span class="best-tag">★ больше всех</span>' +
-      '<div class="sc-h"><span class="badge">' + x.L + '</span>' + x.name + '</div>' +
-      '<div class="sc-big" id="big_' + x.id + '"></div><div class="sc-sub" id="sub_' + x.id + '"></div><div class="sc-v" id="ver_' + x.id + '"></div></div>';
+  el('gen').innerHTML = GEN.map(function (k) {
+    return '<div class="g"><label for="in_' + k + '">' + SHORT[k] + '</label>' + inp(k) + tip(tipOf(k)) + '</div>';
   }).join('');
-
   el('cols').innerHTML = V.map(function (x) {
-    var f = '<div class="cnt"><b id="n_' + x.id + '_0"></b><div><div class="lbl">пришли на сайт</div><div class="track"><i id="t_' + x.id + '_0"></i></div></div></div>';
+    var rows = '<div class="row first"><span class="lbl">пришли на сайт</span><b id="n_' + x.id + '_0"></b><i id="t_' + x.id + '_0"></i></div>';
     x.steps.forEach(function (s, i) {
-      var m = M[s[0]];
-      f += '<div class="conv"><span class="arr">↓</span>' + inp(s[0]) + '<span class="ct">' + m.l + ' ' + tip(m.t) + '</span><span class="note">' + m.n + '</span></div>' +
-        '<div class="cnt"><b id="n_' + x.id + '_' + (i + 1) + '"></b><div><div class="lbl">' + s[1] + '</div><div class="track"><i id="t_' + x.id + '_' + (i + 1) + '"></i></div></div></div>';
+      rows += '<div class="row"><span class="arr">↓</span>' + inp(s[0]) + '<span class="lbl">' + M[s[0]].l + ' ' + tip(tipOf(s[0])) + '</span>' +
+        '<b id="n_' + x.id + '_' + (i + 1) + '" title="' + s[1] + '"></b><i id="t_' + x.id + '_' + (i + 1) + '"></i></div>';
     });
     var money = x.money.map(function (k) {
-      return '<div class="mf"><label for="in_' + k + '">' + M[k].l + ' ' + tip(M[k].t) + '</label>' + inp(k) + '<span class="note">' + M[k].n + '</span></div>';
+      return '<div class="mrow"><span class="lbl">' + SHORT[k] + ' ' + tip(tipOf(k)) + '</span>' + inp(k) + '</div>';
     }).join('');
-    return '<div class="card col ' + x.id + '"><h2><span class="badge">' + x.L + '</span><span>' + x.title + '</span>' + tip(x.tip) + '</h2>' +
-      '<div class="cap">Воронка за день</div>' + f +
-      '<div class="cap">Деньги</div>' + money +
-      '<div class="cap">Итог за месяц</div><div class="eq" id="eq_' + x.id + '"></div><p class="why" id="why_' + x.id + '"></p></div>';
+    return '<div class="card col ' + x.id + '" id="sc_' + x.id + '">' +
+      '<div class="hd"><span class="badge">' + x.L + '</span>' + x.name + tip(x.title + '.&#10;' + x.tip) + '<span class="best-tag">★ лучший из трёх</span></div>' +
+      '<div class="big" id="big_' + x.id + '"></div><div class="sub" id="sub_' + x.id + '"></div><div class="ver" id="ver_' + x.id + '"></div>' +
+      rows + '<div class="mtitle">Деньги</div>' + money + '</div>';
   }).join('');
-
   Object.keys(M).forEach(function (k) {
     el('in_' + k).addEventListener('input', function (e) {
       var x = parseFloat(String(e.target.value).replace(',', '.'));
@@ -272,15 +223,13 @@ function build() {
 function verdict(x, r) {
   // m — что каждая 1 000 посетителей в день оставляет нам за месяц, после производства отчётов
   var m = v.people ? (r.rev - r.out) * 30 * BASE / v.people : 0, fixed = v.cost - v.step;
-  if (r.profit >= 0) return { s: '✅ в плюсе', l: 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов.' };
+  var base = 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов.';
+  if (r.profit >= 0) return { s: '✅ в плюсе', l: base };
   if (m > v.step) {
     var need = Math.ceil(BASE * fixed / (m - v.step));
-    return { s: '➡️ в ноль при ' + fmt(need, 0) + ' посетителях в день',
-      l: 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов. Выйдем в ноль при ' + fmt(need, 0) + ' посетителях в день (сейчас ' + fmt(v.people, 0) + ').' };
+    return { s: '➡️ в ноль при ' + fmt(need, 0) + ' посетителях в день', l: base + ' Выйдем в ноль при ' + fmt(need, 0) + ' посетителях в день (сейчас ' + fmt(v.people, 0) + ').' };
   }
-  return { s: '❌ не окупается при любом трафике',
-    l: 'Каждая 1 000 посетителей приносит ' + eur(m) + ' в месяц, а добавляет ' + eur(v.step) + ' расходов. Больше людей не спасёт.' +
-      (m > 0 ? ' Нужно, чтобы каждый посетитель приносил в ' + fmt(v.step / m, 1) + ' раза больше.' : '') };
+  return { s: '❌ не окупается при любом трафике', l: base + ' Больше людей не спасёт.' + (m > 0 ? ' Нужно, чтобы каждый посетитель приносил в ' + fmt(v.step / m, 1) + ' раза больше.' : '') };
 }
 
 function update(fromInput) {
@@ -300,19 +249,13 @@ function update(fromInput) {
     });
     var r = x.calc(c);
     r.profit = r.rev * 30 - costsMonth - r.out * 30;
-    var w = verdict(x, r);
+    var w = verdict(x, r), cls = r.profit >= 0 ? 'good' : 'bad';
     res.push(r.profit);
-    var cls = r.profit >= 0 ? 'good' : 'bad';
-    el('big_' + x.id).className = 'sc-big ' + cls;
+    el('big_' + x.id).className = 'big ' + cls;
     el('big_' + x.id).innerHTML = signed(r.profit) + ' <small>в месяц</small>';
-    el('sub_' + x.id).textContent = 'выручка ' + eur(r.rev * 30) + ' · расходы ' + eur(costsMonth + r.out * 30);
-    el('ver_' + x.id).textContent = w.s;
-    el('eq_' + x.id).innerHTML =
-      '<div><span>Выручка</span><b>' + eur(r.rev * 30) + '</b></div>' +
-      '<div><span>Расходы на сайт</span><b>− ' + eur(costsMonth) + '</b></div>' +
-      '<div><span>Производство отчётов</span><b>− ' + eur(r.out * 30) + '</b></div>' +
-      '<div class="tot"><span>Прибыль</span><b class="' + cls + '">' + signed(r.profit) + '</b></div>';
-    el('why_' + x.id).textContent = w.l;
+    el('sub_' + x.id).innerHTML = 'выручка ' + eur(r.rev * 30) + ' · расходы ' + eur(costsMonth + r.out * 30) + ' ' +
+      tip('Выручка ' + eur(r.rev * 30) + '&#10;− расходы на сайт ' + eur(costsMonth) + '&#10;− производство отчётов ' + eur(r.out * 30) + '&#10;= прибыль ' + signed(r.profit));
+    el('ver_' + x.id).innerHTML = w.s + ' ' + tip(w.l);
   });
   var best = res.indexOf(Math.max.apply(null, res));
   V.forEach(function (x, i) { el('sc_' + x.id).classList.toggle('best', i === best && res.some(function (p) { return p !== res[best]; })); });
